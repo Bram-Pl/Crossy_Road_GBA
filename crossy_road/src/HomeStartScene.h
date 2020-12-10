@@ -13,14 +13,14 @@ private:
     std::unique_ptr<Background> bgStartScreen;
 
 public:
-    HomeStartScene(const std::shared_ptr<GBAEngine> &engine);
+    //HomeStartScene(const std::shared_ptr<GBAEngine> &engine);
 
     std::vector<Sprite *> sprites() override;
-
     std::vector<Background *> backgrounds() override;
 
-    void load() override;
+    HomeStartScene(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}
 
+    void load() override;
     void tick(u16 keys) override;
 };
 

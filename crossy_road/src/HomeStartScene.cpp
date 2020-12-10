@@ -10,24 +10,53 @@
 #include "HomeStartScene.h"
 #include "start.h"
 
-HomeStartScene::HomeStartScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine){}
+//HomeStartScene::HomeStartScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine){}
 
 std::vector<Background *> HomeStartScene::backgrounds() {
     return {
             bgStartScreen.get()
     };
 }
-
 std::vector<Sprite *> HomeStartScene::sprites(){
     return{};
 }
 
+
 void HomeStartScene::load() {
+
+    REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1; //Turning off background 2 and 3
+
     engine.get()->enableText();
 
+
+    /*
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
     bgStartScreen = std::unique_ptr<Background>(new Background(0, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
     bgStartScreen.get()->useMapScreenBlock(24);
+ */
+
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(StartPal, sizeof(StartPal)));
+
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
+    bgStartScreen = std::unique_ptr<Background>(new Background(1, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
+    //bgStartScreen.get()->useMapScreenBlock(24);
+
+    SpriteBuilder<Sprite> builder;
+
+    TextStream::instance().setText("PRESS START", 3, 8);
+
+
+/*
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager());
+
+    SpriteBuilder<Sprite> builder;
+
+
+    TextStream::instance().setText("PRESS START", 3, 8);
+*/
+
+
 }
 
 void HomeStartScene::tick(u16 keys) {
