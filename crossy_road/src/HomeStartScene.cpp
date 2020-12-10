@@ -9,6 +9,7 @@
 
 #include "HomeStartScene.h"
 #include "start.h"
+#include "HomeMusic.h"
 
 //HomeStartScene::HomeStartScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine){}
 
@@ -28,7 +29,6 @@ void HomeStartScene::load() {
 
     engine.get()->enableText();
 
-
     /*
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
     bgStartScreen = std::unique_ptr<Background>(new Background(0, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
@@ -43,7 +43,7 @@ void HomeStartScene::load() {
 
     SpriteBuilder<Sprite> builder;
 
-    TextStream::instance().setText("PRESS START", 3, 8);
+    TextStream::instance().setText("PRESS START", 16, 9);
 
 
 /*
@@ -52,11 +52,10 @@ void HomeStartScene::load() {
 
     SpriteBuilder<Sprite> builder;
 
-
     TextStream::instance().setText("PRESS START", 3, 8);
 */
 
-
+    engine->enqueueMusic(HomescreenMusic,HomescreenMusicBytes);//music
 }
 
 void HomeStartScene::tick(u16 keys) {
