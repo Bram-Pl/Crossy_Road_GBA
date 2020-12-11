@@ -9,6 +9,7 @@
 
 #include "HomeStartScene.h"
 #include "start.h"
+#include "Clouds1.h"
 #include "HomeMusic.h"
 
 //HomeStartScene::HomeStartScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine){}
@@ -38,10 +39,14 @@ void HomeStartScene::load() {
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(StartPal, sizeof(StartPal)));
 
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
-    bgStartScreen = std::unique_ptr<Background>(new Background(1, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
-    //bgStartScreen.get()->useMapScreenBlock(24);
 
-    SpriteBuilder<Sprite> builder;
+    bgStartScreen = std::unique_ptr<Background>(new Background(1, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
+    bgStartScreen.get()->useMapScreenBlock(7);  //7 IS GOED
+
+    //Clouds_1 = std::unique_ptr<Background>(new Background(2, Clouds1Tiles, sizeof(Clouds1Tiles), Clouds1Map, sizeof(Clouds1Map)));
+    //Clouds_1.get()->useMapScreenBlock(95);
+
+    //SpriteBuilder<Sprite> builder;
 
     TextStream::instance().setText("PRESS START", 16, 9);
 
