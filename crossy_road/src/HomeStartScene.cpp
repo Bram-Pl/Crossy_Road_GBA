@@ -11,6 +11,7 @@
 #include "start.h"
 #include "Clouds1.h"
 #include "HomeMusic.h"
+#include "GameScreen.h"
 
 //HomeStartScene::HomeStartScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine){}
 
@@ -64,5 +65,8 @@ void HomeStartScene::load() {
 }
 
 void HomeStartScene::tick(u16 keys) {
-
+    if(keys & KEY_START)
+    {
+        engine->transitionIntoScene(new GameScreen(engine), new FadeOutScene(1));//engine->transitionIntoScene(new FlyingStuffScene(engine), new FadeOutScene(2));
+    }
 }
