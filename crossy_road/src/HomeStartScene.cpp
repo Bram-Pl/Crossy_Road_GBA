@@ -15,7 +15,6 @@
 #include "../sprites/cloud/cloud1.c"
 #include "../sprites/cloud/cloud2.c"
 #include "../music/CrossyRoadTheme.h"
-//#include "../music/sample_sound.h"
 
 #define cloudTick 5
 
@@ -96,7 +95,6 @@ void HomeStartScene::load() {
 
     ///Play music
     engine->getTimer()->start();
-    //engine->enqueueMusic(zelda_music_16K_mono, zelda_music_16K_mono_bytes);//Works now
     engine->enqueueMusic(CrossyRoadTheme, CrossyRoadTheme_bytes);
 }
 
