@@ -90,7 +90,7 @@ void GameScreen::load() { //what to do upon loading
 
     //Game ticks
 void GameScreen::tick(u16 keys) {
-        TextStream::instance().setText(std::string("Score: ") + std::to_string(birdPlayer->score), 1, 20);
+        TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
 
         birdPlayer->tick(keys);
 }
