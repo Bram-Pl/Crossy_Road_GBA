@@ -11,8 +11,10 @@
 #include "start.h"
 #include "HomeMusic.h"
 #include "GameScreen.h"
-#include "../sprites/bird/birdForward.c"
-#include "../sprites/bird/shared.c"
+#include "../sprites/cloud/shared.c"
+#include "../sprites/cloud/cloud0.c"
+#include "../sprites/cloud/cloud1.c"
+#include "../sprites/cloud/cloud2.c"
 
 std::vector<Background *> HomeStartScene::backgrounds() {
     return {
@@ -20,15 +22,56 @@ std::vector<Background *> HomeStartScene::backgrounds() {
     };
 }
 std::vector<Sprite *> HomeStartScene::sprites(){
-    return{};
+    return{
+        cloud0.get(),
+        cloud1.get(),
+        cloud2.get(),
+        cloud3.get(),
+        cloud4.get()
+    };
 }
 
 
 void HomeStartScene::load() {
 
+    timer = 0;
+
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1; //Turning off background 2 and 3
 
     engine.get()->enableText();
+
+    //Create spritebuilder to create sprites
+    SpriteBuilder<Sprite> builder;
+
+    cloud0 = builder
+            .withData(cloud0Tiles, sizeof(cloud0Tiles))
+            .withSize(SIZE_32_32)
+            .withLocation((GBA_SCREEN_WIDTH+20), 3)
+            .buildPtr();
+
+    cloud1 = builder
+            .withData(cloud1Tiles, sizeof(cloud1Tiles))
+            .withSize(SIZE_32_32)
+            .withLocation(-80, 35)
+            .buildPtr();
+
+    cloud2 = builder
+            .withData(cloud2Tiles, sizeof(cloud2Tiles))
+            .withSize(SIZE_32_32)
+            .withLocation((GBA_SCREEN_WIDTH+20), 27)
+            .buildPtr();
+
+    cloud3 = builder
+            .withData(cloud0Tiles, sizeof(cloud0Tiles))
+            .withSize(SIZE_32_32)
+            .withLocation(-50, 15)
+            .buildPtr();
+
+    cloud4 = builder
+            .withData(cloud1Tiles, sizeof(cloud1Tiles))
+            .withSize(SIZE_32_32)
+            .withLocation((GBA_SCREEN_WIDTH+60), 22)
+            .buildPtr();
 
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
@@ -42,8 +85,33 @@ void HomeStartScene::load() {
 }
 
 void HomeStartScene::tick(u16 keys) {
+    timer++;
+
     if(keys & KEY_START)
     {
         engine->transitionIntoScene(new GameScreen(engine), new FadeOutScene(1));//engine->transitionIntoScene(new FlyingStuffScene(engine), new FadeOutScene(2));
+    }
+    if(timer > 5){
+        if(cloud0->getX() < -32){
+            cloud0->moveTo((GBA_SCREEN_WIDTH+20), 20);
+        }
+        if(cloud1->getX() > (GBA_SCREEN_WIDTH + 32)){
+            cloud1->moveTo(-32, 35);
+        }
+        if(cloud2->getX() < -20){
+            cloud2->moveTo((GBA_SCREEN_WIDTH+20), 27);
+        }
+        if(cloud3->getX() > (GBA_SCREEN_WIDTH + 32)){
+            cloud3->moveTo(-32, 27);
+        }
+        if(cloud4->getX() < -20){
+            cloud4->moveTo((GBA_SCREEN_WIDTH+20), 27);
+        }
+        cloud0->moveTo((cloud0->getX()-1),cloud0->getY());
+        cloud1->moveTo((cloud1->getX()+2),cloud1->getY());
+        cloud2->moveTo((cloud2->getX()-2),cloud2->getY());
+        cloud3->moveTo((cloud3->getX()+1),cloud3->getY());
+        cloud4->moveTo((cloud4->getX()-1),cloud4->getY());
+        timer = 0;
     }
 }

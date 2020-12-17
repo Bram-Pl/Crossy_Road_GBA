@@ -11,7 +11,13 @@
 class HomeStartScene : public Scene {
 private:
     std::unique_ptr<Background> bgStartScreen;
+    std::unique_ptr<Sprite> cloud0;
+    std::unique_ptr<Sprite> cloud1;
+    std::unique_ptr<Sprite> cloud2;
+    std::unique_ptr<Sprite> cloud3;
+    std::unique_ptr<Sprite> cloud4;
 
+    int timer;
 public:
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
