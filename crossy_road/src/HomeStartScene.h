@@ -10,6 +10,7 @@
 
 class HomeStartScene : public Scene {
 private:
+    ///Declaration of background and sprites on homestartscene
     std::unique_ptr<Background> bgStartScreen;
     std::unique_ptr<Sprite> cloud0;
     std::unique_ptr<Sprite> cloud1;
@@ -17,13 +18,17 @@ private:
     std::unique_ptr<Sprite> cloud3;
     std::unique_ptr<Sprite> cloud4;
 
+    ///timer to move the clouds
     int timer;
 public:
+    ///Constructor
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
 
+    ///create scene using GBA Engine
     HomeStartScene(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}
 
+    ///Default functions for scene
     void load() override;
     void tick(u16 keys) override;
 };

@@ -10,11 +10,14 @@
 int main(){
     std::shared_ptr<GBAEngine> engine(new GBAEngine());
 
-    auto startScene = new HomeStartScene(engine);
+    ///Call scene for the start menu 'HomeStartScene'
+    auto* startScene = new HomeStartScene(engine);
     engine->setScene(startScene);
 
+    ///Neverending loop to update engine, heart of the game
     while (true){
         engine->update();
+        engine->delay(1000);
     }
 
     return(0);

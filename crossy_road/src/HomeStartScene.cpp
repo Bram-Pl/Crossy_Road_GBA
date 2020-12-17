@@ -8,19 +8,25 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 
 #include "HomeStartScene.h"
-#include "start.h"
-#include "HomeMusic.h"
+#include "../background/start.h"
 #include "GameScreen.h"
 #include "../sprites/cloud/shared.c"
 #include "../sprites/cloud/cloud0.c"
 #include "../sprites/cloud/cloud1.c"
 #include "../sprites/cloud/cloud2.c"
+#include "../music/CrossyRoadTheme.h"
+//#include "../music/sample_sound.h"
 
+#define cloudTick 5
+
+///Getter for the background
 std::vector<Background *> HomeStartScene::backgrounds() {
     return {
             bgStartScreen.get()
     };
 }
+
+///Getter for the sprites
 std::vector<Sprite *> HomeStartScene::sprites(){
     return{
         cloud0.get(),
@@ -31,18 +37,22 @@ std::vector<Sprite *> HomeStartScene::sprites(){
     };
 }
 
-
+///First load up of scene "HomeStartScene"
 void HomeStartScene::load() {
 
+    ///Default timer to value zero for the movement of clouds
     timer = 0;
 
+    ///Disable Background 2 and 3 to prevent gibberish
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1; //Turning off background 2 and 3
 
+    ///Enable text to be presented on the menu
     engine.get()->enableText();
 
-    //Create spritebuilder to create sprites
+    ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;
 
+    ///Create four cloud sprites
     cloud0 = builder
             .withData(cloud0Tiles, sizeof(cloud0Tiles))
             .withSize(SIZE_32_32)
@@ -52,19 +62,19 @@ void HomeStartScene::load() {
     cloud1 = builder
             .withData(cloud1Tiles, sizeof(cloud1Tiles))
             .withSize(SIZE_32_32)
-            .withLocation(-80, 35)
+            .withLocation(-80, 15)
             .buildPtr();
 
     cloud2 = builder
             .withData(cloud2Tiles, sizeof(cloud2Tiles))
             .withSize(SIZE_32_32)
-            .withLocation((GBA_SCREEN_WIDTH+20), 27)
+            .withLocation((GBA_SCREEN_WIDTH+20), 35)
             .buildPtr();
 
     cloud3 = builder
             .withData(cloud0Tiles, sizeof(cloud0Tiles))
             .withSize(SIZE_32_32)
-            .withLocation(-50, 15)
+            .withLocation(-50, 27)
             .buildPtr();
 
     cloud4 = builder
@@ -73,45 +83,63 @@ void HomeStartScene::load() {
             .withLocation((GBA_SCREEN_WIDTH+60), 22)
             .buildPtr();
 
+    ///Set colour palette for foreground(sprites) and background
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
 
+    ///Set parameters for background
     bgStartScreen = std::unique_ptr<Background>(new Background(1, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
     bgStartScreen.get()->useMapScreenBlock(7);  //7 IS GOED
 
+    ///Add text to the main screen
     TextStream::instance().setText("PRESS START", 16, 9);
 
-    engine->enqueueMusic(HomescreenMusic,HomescreenMusicBytes);//music
+    ///Play music
+    engine->getTimer()->start();
+    //engine->enqueueMusic(zelda_music_16K_mono, zelda_music_16K_mono_bytes);//Works now
+    engine->enqueueMusic(CrossyRoadTheme, CrossyRoadTheme_bytes);
 }
 
+///Every tick in game
 void HomeStartScene::tick(u16 keys) {
     timer++;
 
+    ///Flip two clouds around it's horizontal line to make them look more unique
+    cloud0->flipHorizontally(true);
+    cloud4->flipHorizontally(true);
+
+    ///If the "Start" key is pressed, the game will start
     if(keys & KEY_START)
     {
+        ///Transition into the new scene
         engine->transitionIntoScene(new GameScreen(engine), new FadeOutScene(1));//engine->transitionIntoScene(new FlyingStuffScene(engine), new FadeOutScene(2));
     }
-    if(timer > 5){
+
+    ///Move the cloud an 'x' amount of pixels per 5 game ticks
+    if(timer > cloudTick){
+        ///Check for out of bounds and move the clouds back to start the cycle over
         if(cloud0->getX() < -32){
-            cloud0->moveTo((GBA_SCREEN_WIDTH+20), 20);
+            cloud0->moveTo((GBA_SCREEN_WIDTH+20), cloud0->getY());
         }
         if(cloud1->getX() > (GBA_SCREEN_WIDTH + 32)){
-            cloud1->moveTo(-32, 35);
+            cloud1->moveTo(-32, cloud1->getY());
         }
         if(cloud2->getX() < -20){
-            cloud2->moveTo((GBA_SCREEN_WIDTH+20), 27);
+            cloud2->moveTo((GBA_SCREEN_WIDTH+20), cloud2->getY());
         }
         if(cloud3->getX() > (GBA_SCREEN_WIDTH + 32)){
-            cloud3->moveTo(-32, 27);
+            cloud3->moveTo(-32, cloud3->getY());
         }
         if(cloud4->getX() < -20){
-            cloud4->moveTo((GBA_SCREEN_WIDTH+20), 27);
+            cloud4->moveTo((GBA_SCREEN_WIDTH+20), cloud4->getY());
         }
+        ///Move the clouds an 'x' amount to it's respective x
         cloud0->moveTo((cloud0->getX()-1),cloud0->getY());
         cloud1->moveTo((cloud1->getX()+2),cloud1->getY());
         cloud2->moveTo((cloud2->getX()-2),cloud2->getY());
         cloud3->moveTo((cloud3->getX()+1),cloud3->getY());
         cloud4->moveTo((cloud4->getX()-1),cloud4->getY());
+        ///Reset timer for the cloud tick
         timer = 0;
     }
 }

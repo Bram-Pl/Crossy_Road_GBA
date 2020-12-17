@@ -8,8 +8,10 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/gba_engine.h>
 
+///bird class .h file
 class bird {
 private:
+    ///Declaration of sprites
     std::unique_ptr<Sprite> birdForwardSprite;
     std::unique_ptr<Sprite> birdForwardMoveSprite;
     std::unique_ptr<Sprite> birdLeftSprite;
@@ -17,19 +19,15 @@ private:
     std::unique_ptr<Sprite> birdRightSprite;
     std::unique_ptr<Sprite> birdRightMoveSprite;
 
-    bool collision;
-
-    bool movingForward;
-    bool movingLeft;
-    bool movingRight;
-
+    ///boolean to check the last movement -- influences the sprite displayed
     bool lastMoveForward;
     bool lastMoveLeft;
     bool lastMoveRight;
 
+    ///timer for the fly 'animation'
     int timer;
+
 public:
-    int score = 0;
     ///Constructor
     bird(   std::unique_ptr<Sprite> birdForwardSprite,
             std::unique_ptr<Sprite> birdForwardMoveSprite,
@@ -52,17 +50,12 @@ public:
     Sprite* getbirdRightSprite() {return birdRightSprite.get();}
     Sprite* getbirdRightMoveSprite() {return birdRightMoveSprite.get();}
 
-    double getxPosition() {return xPosition;}
-    double getScore() {return score;}
-    bool isMovingForward() {return movingForward;}
-    bool isLastMoveForward() {return lastMoveForward;}
-    bool isMovingLeft() {return movingLeft;}
-    bool isLastMoveLeft() {return lastMoveLeft;}
-    bool isMovingRight() {return movingRight;}
-    bool isLastMoveRight() {return lastMoveRight;}
+    int score = 0;
 
+    ///tick function for key presses
     void tick(u16 keys);
 
+    ///Declaration start position bird
     double xPosition = (GBA_SCREEN_WIDTH/2 - 16);
     double yPosition = (GBA_SCREEN_HEIGHT - 32);
 };

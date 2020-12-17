@@ -13,10 +13,11 @@
 
 class GameScreen : public Scene {
 private:
+    ///Declaration of background and sprites
     std::unique_ptr<Background> bgBasic;
     std::unique_ptr<bird> birdPlayer;
 
-    //Create spritebuilder to create sprites
+    ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;
 
 public:

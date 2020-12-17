@@ -12,7 +12,7 @@
 
 #include "lama.h"
 #include "ff.h"
-#include "sample_sound.h"
+//#include "sample_sound.h"
 
 std::vector<Background *> SampleStartScene::backgrounds() {
     return {};
@@ -45,7 +45,8 @@ void SampleStartScene::load() {
     TextStream::instance().setText("PRESS START", 3, 8);
 
     engine->getTimer()->start();
-    engine->enqueueMusic(zelda_music_16K_mono, zelda_music_16K_mono_bytes);
+    //engine->enqueueMusic(zelda_music_16K_mono, zelda_music_16K_mono_bytes); //Is working now
+
 }
 
 void SampleStartScene::tick(u16 keys) {

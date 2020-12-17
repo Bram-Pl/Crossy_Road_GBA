@@ -17,10 +17,7 @@
 #include "../sprites/bird/birdRightMove.c"
 #include "../sprites/bird/shared.c"
 
-/*
- * Get Sprites when loading the game
- * birdForward
-*/
+///Load sprites into vector
 std::vector<Sprite *> GameScreen::sprites() {
     std::vector<Sprite *> sprites;
 
@@ -34,28 +31,23 @@ std::vector<Sprite *> GameScreen::sprites() {
     return{sprites};
 }
 
-/*
- * Get backgrounds when loading the game
- * bgBasic, currently empty
-*/
+///Get background in game, may be removed if backgrounds are sprite ***
 std::vector<Background *> GameScreen::backgrounds() {
     return {
         //bgBasic.get()
     };
 }
 
-/*
- * Upon loading the scene:
-*/
-void GameScreen::load() { //what to do upon loading
+///When loading the scene this happens
+void GameScreen::load() {
 
-    REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1; //Only enable to layers needed.
+    ///Disable Background 2 and 3 to prevent gibberish
+    REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1;
 
-    //TextStream::instance().setText("Test Fase", 16, 9); //Test text
-
-    //Set Foreground/background palette
+    ///Set colour palette for foreground(sprites) and background
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
+    ///Add birdPlayer to the game and call the possible sprites, only birdForward is visible in the screen
     birdPlayer = std::unique_ptr<bird>(new bird(        builder //Forward Bird
                                                             .withData(birdForwardTiles, sizeof(birdForwardTiles))
                                                             .withSize(SIZE_32_32)
@@ -88,9 +80,11 @@ void GameScreen::load() { //what to do upon loading
                                                             .buildPtr()));
 }
 
-    //Game ticks
+///Every tick in game
 void GameScreen::tick(u16 keys) {
-        TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
+    ///Display the current score
+    TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
 
-        birdPlayer->tick(keys);
+    ///Run the tick() function of birdPlayer
+    birdPlayer->tick(keys);
 }

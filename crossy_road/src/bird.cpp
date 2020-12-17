@@ -8,10 +8,13 @@
 #define delayFly 15
 #define delayForward 14
 
+///bird class .cpp file
 void bird::tick(u16 keys) {
 
+    ///add tick to timer
     timer++;
 
+    ///detect if 'UP' key is pressed, load the move forward sprite and increment the score by one
     if(keys & KEY_UP){
         if(delayForward < timer){
             timer = 0;
@@ -31,6 +34,8 @@ void bird::tick(u16 keys) {
             score++;
         }
     }
+
+    ///detect if 'LEFT' key is pressed, load the move left sprite
     if(keys & KEY_LEFT){
         timer = 0;
 
@@ -50,6 +55,8 @@ void bird::tick(u16 keys) {
         lastMoveLeft = true;
         lastMoveRight = false;
     }
+
+    ///detect if 'RIGHT' key is pressed, load the move right sprite
     if(keys & KEY_RIGHT){
         timer = 0;
 
@@ -70,18 +77,21 @@ void bird::tick(u16 keys) {
         lastMoveRight = true;
     }
 
+    ///Stop the move forward sprite and replace with last movement forward sprite after 'delayfly' time generates the effect of 'flying' forward
     if(lastMoveForward && timer > delayFly){
         birdForwardSprite->moveTo(xPosition, yPosition);
         birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
         lastMoveForward = !lastMoveForward;
     }
 
+    ///Stop the move left sprite and replace with last movement left sprite after 'delayfly' time generates the effect of 'flying' left
     if(lastMoveLeft && timer > delayFly){
         birdLeftSprite->moveTo(xPosition, yPosition);
         birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
         lastMoveLeft = !lastMoveLeft;
     }
 
+    ///Stop the move right sprite and replace with last movement right sprite after 'delayfly' time generates the effect of 'flying' right
     if(lastMoveRight && timer > delayFly){
         birdRightSprite->moveTo(xPosition, yPosition);
         birdRightMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
