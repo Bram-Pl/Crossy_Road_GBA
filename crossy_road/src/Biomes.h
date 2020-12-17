@@ -1,0 +1,18 @@
+//
+// Created by 11700372 on 17/12/2020.
+//
+
+#ifndef GBA_SPRITE_ENGINE_PROJECT_BIOMES_H
+#define GBA_SPRITE_ENGINE_PROJECT_BIOMES_H
+
+
+
+
+
+
+
+
+
+
+
+#endif //GBA_SPRITE_ENGINE_PROJECT_BIOMES_H
