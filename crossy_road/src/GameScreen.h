@@ -11,8 +11,7 @@
 class GameScreen : public Scene {
 private:
     std::unique_ptr<Background> bgBasic;
-
-    std::vector<Sprite *> birdUP;
+    std::unique_ptr<Sprite> birdForward;
 
 public:
     std::vector<Sprite *> sprites() override;

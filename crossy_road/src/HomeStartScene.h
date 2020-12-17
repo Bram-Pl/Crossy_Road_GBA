@@ -11,11 +11,8 @@
 class HomeStartScene : public Scene {
 private:
     std::unique_ptr<Background> bgStartScreen;
-    std::unique_ptr<Background> Clouds_1;
 
 public:
-    //HomeStartScene(const std::shared_ptr<GBAEngine> &engine);
-
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
 

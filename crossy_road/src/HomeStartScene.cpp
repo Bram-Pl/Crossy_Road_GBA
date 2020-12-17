@@ -12,8 +12,8 @@
 #include "Clouds1.h"
 #include "HomeMusic.h"
 #include "GameScreen.h"
-
-//HomeStartScene::HomeStartScene(const std::shared_ptr<GBAEngine> &engine) : Scene(engine){}
+#include "../sprites/bird/birdForward.c"
+#include "../sprites/bird/shared.c"
 
 std::vector<Background *> HomeStartScene::backgrounds() {
     return {
@@ -31,35 +31,13 @@ void HomeStartScene::load() {
 
     engine.get()->enableText();
 
-    /*
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
-    bgStartScreen = std::unique_ptr<Background>(new Background(0, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
-    bgStartScreen.get()->useMapScreenBlock(24);
- */
-
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(StartPal, sizeof(StartPal)));
-
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
 
     bgStartScreen = std::unique_ptr<Background>(new Background(1, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
     bgStartScreen.get()->useMapScreenBlock(7);  //7 IS GOED
 
-    //Clouds_1 = std::unique_ptr<Background>(new Background(2, Clouds1Tiles, sizeof(Clouds1Tiles), Clouds1Map, sizeof(Clouds1Map)));
-    //Clouds_1.get()->useMapScreenBlock(95);
-
-    //SpriteBuilder<Sprite> builder;
-
     TextStream::instance().setText("PRESS START", 16, 9);
-
-
-/*
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
-    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager());
-
-    SpriteBuilder<Sprite> builder;
-
-    TextStream::instance().setText("PRESS START", 3, 8);
-*/
 
     engine->enqueueMusic(HomescreenMusic,HomescreenMusicBytes);//music
 }
