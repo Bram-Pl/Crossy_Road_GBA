@@ -7,18 +7,27 @@
 
 
 #include <libgba-sprite-engine/scene.h>
+#include <libgba-sprite-engine/gba_engine.h>
+
+#include "bird.h"
 
 class GameScreen : public Scene {
 private:
     std::unique_ptr<Background> bgBasic;
-    std::unique_ptr<Sprite> birdForward;
+    std::unique_ptr<bird> birdPlayer;
+
+    //Create spritebuilder to create sprites
+    SpriteBuilder<Sprite> builder;
 
 public:
+    ///Constructor
+    GameScreen(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}
+
+    ///Getters
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
 
-    GameScreen(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}
-
+    ///Other
     void load() override;
     void tick(u16 keys) override;
 };

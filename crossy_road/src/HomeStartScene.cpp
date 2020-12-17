@@ -9,7 +9,6 @@
 
 #include "HomeStartScene.h"
 #include "start.h"
-#include "Clouds1.h"
 #include "HomeMusic.h"
 #include "GameScreen.h"
 #include "../sprites/bird/birdForward.c"

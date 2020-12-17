@@ -6,7 +6,7 @@
 #define GBA_SPRITE_ENGINE_PROJECT_BIRD_H
 
 #include <libgba-sprite-engine/scene.h>
-#include "../../crossy_road/sprites/bird/birdForward.c"
+#include <libgba-sprite-engine/gba_engine.h>
 
 class bird {
 private:
@@ -17,7 +17,6 @@ private:
     std::unique_ptr<Sprite> birdRightSprite;
     std::unique_ptr<Sprite> birdRightMoveSprite;
 
-    double yPosition;
     bool collision;
 
     bool movingForward;
@@ -28,15 +27,22 @@ private:
     bool lastMoveLeft;
     bool lastMoveRight;
 
+    int timer;
 public:
-    double score;
+    int score = 0;
     ///Constructor
-    bird(std::unique_ptr<Sprite> birdForwardSprite,
+    bird(   std::unique_ptr<Sprite> birdForwardSprite,
             std::unique_ptr<Sprite> birdForwardMoveSprite,
             std::unique_ptr<Sprite> birdLeftSprite,
             std::unique_ptr<Sprite> birdLeftMoveSprite,
             std::unique_ptr<Sprite> birdRightSprite,
-            std::unique_ptr<Sprite> birdRightMoveSprite);
+            std::unique_ptr<Sprite> birdRightMoveSprite) :
+            birdForwardSprite(std::move(birdForwardSprite)),
+            birdForwardMoveSprite(std::move(birdForwardMoveSprite)),
+            birdLeftSprite(std::move(birdLeftSprite)),
+            birdLeftMoveSprite(std::move(birdLeftMoveSprite)),
+            birdRightSprite(std::move(birdRightSprite)),
+            birdRightMoveSprite(std::move(birdRightMoveSprite)) {};
 
     ///Getters
     Sprite* getBirdForwardSprite() {return birdForwardSprite.get();}
@@ -46,7 +52,7 @@ public:
     Sprite* getbirdRightSprite() {return birdRightSprite.get();}
     Sprite* getbirdRightMoveSprite() {return birdRightMoveSprite.get();}
 
-    double getyPosition() {return yPosition;}
+    double getxPosition() {return xPosition;}
     double getScore() {return score;}
     bool isMovingForward() {return movingForward;}
     bool isLastMoveForward() {return lastMoveForward;}
@@ -56,8 +62,9 @@ public:
     bool isLastMoveRight() {return lastMoveRight;}
 
     void tick(u16 keys);
-    void move();
 
+    double xPosition = (GBA_SCREEN_WIDTH/2 - 16);
+    double yPosition = (GBA_SCREEN_HEIGHT - 32);
 };
 
 
