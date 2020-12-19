@@ -9,6 +9,7 @@
 
 #include "GameScreen.h"
 
+///bird includes
 #include "../sprites/bird/birdForward.c"
 #include "../sprites/bird/birdForwardMove.c"
 #include "../sprites/bird/birdLeft.c"
@@ -16,6 +17,16 @@
 #include "../sprites/bird/birdRight.c"
 #include "../sprites/bird/birdRightMove.c"
 #include "../sprites/bird/shared.c"
+
+///biomes includes
+#include "../biomes/Grass/grass.cpp"
+#include "../biomes/Grass/tree.cpp"
+#include "../biomes/Road/road.cpp"
+#include "../biomes/Road/car.cpp"
+#include "../biomes/Water/water.cpp"
+#include "../biomes/Water/treetrunk.cpp"
+#include "../biomes/Water/waterlily.cpp"
+#include "biomes.h"
 
 ///Load sprites into vector
 std::vector<Sprite *> GameScreen::sprites() {
@@ -27,6 +38,10 @@ std::vector<Sprite *> GameScreen::sprites() {
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
     sprites.push_back(birdPlayer->getbirdRightSprite());
     sprites.push_back(birdPlayer->getbirdRightMoveSprite());
+
+    //sprites.push_back(biomesSlider->getGrassSprite());
+    //sprites.push_back(biomesSlider->getRoadSprite());
+    //sprites.push_back(biomesSlider->getWaterSprite());
 
     return{sprites};
 }
@@ -78,6 +93,22 @@ void GameScreen::load() {
                                                             .withSize(SIZE_32_32)
                                                             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
                                                             .buildPtr()));
+ /*   biomesSlider = std::unique_ptr<biomes>(new biomes        builder
+                                                            .withData(GrassTiles, sizeof(GrassTiles))
+                                                            .withSize(SIZE_240_32)
+                                                            .withLocation(GBA_SCREEN_WIDTH, GBA_SCREEN_HEIGHT + (2*32))
+                                                            .build(),
+ /                                                          builder
+                                                                  .withData(RoadTiles, sizeof(RoadTiles))
+                                                                  .withSize(SIZE_240_32)
+                                                                  .withLocation(GBA_SCREEN_WIDTH, GBA_SCREEN_HEIGHT + (2*32))
+                                                                  .build(),
+                                                          builder
+                                                                  .withData(WaterTiles, sizeof(WaterTiles))
+                                                                  .withSize(SIZE_240_32)
+                                                                  .withLocation(GBA_SCREEN_WIDTH, GBA_SCREEN_HEIGHT + (2*32))
+                                                                  .build()));
+*/
 }
 
 ///Every tick in game

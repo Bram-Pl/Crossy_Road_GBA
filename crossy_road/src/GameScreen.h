@@ -10,12 +10,14 @@
 #include <libgba-sprite-engine/gba_engine.h>
 
 #include "bird.h"
+#include "biomes.h"
 
 class GameScreen : public Scene {
 private:
     ///Declaration of background and sprites
     std::unique_ptr<Background> bgBasic;
     std::unique_ptr<bird> birdPlayer;
+    std::unique_ptr<biomes> biomesSlider;
 
     ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;

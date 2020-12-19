@@ -22,10 +22,10 @@ Sprite::Sprite(const void *imageData, int imageSize, int x, int y, SpriteSize si
     setAttributesBasedOnSize(size);
 }
 
-void Sprite::moveTo(VECTOR location) {
+/*void Sprite::moveTo(int location) {
     moveTo(location.x, location.y);
 }
-
+*/
 void Sprite::moveTo(int x, int y) {
     this->x = x;
     this->y = y;

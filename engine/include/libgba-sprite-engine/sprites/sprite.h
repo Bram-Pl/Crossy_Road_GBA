@@ -39,7 +39,8 @@ enum SpriteSize {
     SIZE_8_16,
     SIZE_8_32,
     SIZE_16_32,
-    SIZE_32_64
+    SIZE_32_64,
+    SIZE_240_32
 };
 
 class SpriteManager;
@@ -86,7 +87,7 @@ public:
     void update();
 
     void moveTo(int x, int y);
-    void moveTo(VECTOR location);
+    void moveTo(int location);
     bool collidesWith(Sprite &s2);
 
     void flipVertically(bool flip);
