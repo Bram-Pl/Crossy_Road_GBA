@@ -87,7 +87,7 @@ public:
     void update();
 
     void moveTo(int x, int y);
-    void moveTo(int location);
+    void moveTo(VECTOR location);
     bool collidesWith(Sprite &s2);
 
     void flipVertically(bool flip);
