@@ -3,7 +3,7 @@
 //
 
 
-//{{BLOCK(Leave_Water)
+//{{BLOCK(Waterlily)
 
 //======================================================================
 //
@@ -19,7 +19,7 @@
 //
 //======================================================================
 
-const unsigned int Leave_WaterTiles[240] __attribute__((aligned(4)))=
+const unsigned int WaterlilyTiles[240] __attribute__((aligned(4)))=
         {
                 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
                 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
@@ -56,7 +56,7 @@ const unsigned int Leave_WaterTiles[240] __attribute__((aligned(4)))=
                 0x01000102,0x00010101,0x00000001,0x01010100,0x00000000,0x01010000,0x00000000,0x01000000,
         };
 
-const unsigned short Leave_WaterMap[1024] __attribute__((aligned(4)))=
+const unsigned short WaterlilyMap[1024] __attribute__((aligned(4)))=
         {
                 0x0001,0x0002,0x0003,0x0401,0x0000,0x0000,0x0000,0x0000,
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
@@ -203,7 +203,7 @@ const unsigned short Leave_WaterMap[1024] __attribute__((aligned(4)))=
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
         };
 
-const unsigned short Leave_WaterPal[256] __attribute__((aligned(4)))=
+const unsigned short WaterlilyPal[256] __attribute__((aligned(4)))=
         {
                 0x0000,0x1240,0x1F21,0x0000,0x0000,0x0000,0x0000,0x0000,
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
@@ -242,4 +242,4 @@ const unsigned short Leave_WaterPal[256] __attribute__((aligned(4)))=
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
         };
 
-//}}BLOCK(Leave_Water)
+//}}BLOCK(Waterlily)

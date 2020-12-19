@@ -3,7 +3,7 @@
 //
 
 
-//{{BLOCK(TreeTrunk)
+//{{BLOCK(Treetrunk)
 
 //======================================================================
 //
@@ -19,7 +19,7 @@
 //
 //======================================================================
 
-const unsigned int TreeTrunkTiles[272] __attribute__((aligned(4)))=
+const unsigned int TreetrunkTiles[272] __attribute__((aligned(4)))=
         {
                 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
                 0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,0x00000000,
@@ -61,7 +61,7 @@ const unsigned int TreeTrunkTiles[272] __attribute__((aligned(4)))=
                 0x2F2F3E2F,0x2F34512F,0x3E3E1D3F,0x3E3E013E,0x00000000,0x00000000,0x00000000,0x00000000,
         };
 
-const unsigned short TreeTrunkMap[1024] __attribute__((aligned(4)))=
+const unsigned short TreetrunkMap[1024] __attribute__((aligned(4)))=
         {
                 0x3001,0x4002,0x4003,0x0004,0x0000,0x0000,0x0000,0x0000,
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
@@ -208,7 +208,7 @@ const unsigned short TreeTrunkMap[1024] __attribute__((aligned(4)))=
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
         };
 
-const unsigned short TreeTrunkPal[256] __attribute__((aligned(4)))=
+const unsigned short TreetrunkPal[256] __attribute__((aligned(4)))=
         {
                 0x0000,0x0088,0x012F,0x00EB,0x0171,0x00ED,0x0971,0x008A,
                 0x0150,0x010E,0x008B,0x0551,0x0550,0x04EB,0x04AB,0x09B2,
@@ -247,4 +247,4 @@ const unsigned short TreeTrunkPal[256] __attribute__((aligned(4)))=
                 0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
         };
 
-//}}BLOCK(TreeTrunk)
+//}}BLOCK(Treetrunk)
