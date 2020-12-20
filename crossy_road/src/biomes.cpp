@@ -17,10 +17,19 @@ void biomes::tick(u16 keys) {
          if (delaySlide < timer) {
              timer = 0;
 
-             grassSprite->moveTo(xPosition, yPosition);
+             //grassSlideSprite->moveTo(xPosition, yPosition);
 
-            grassSprite->moveTo((GBA_SCREEN_WIDTH),(GBA_SCREEN_HEIGHT + 32));
+             grassSprite->moveTo((GBA_SCREEN_WIDTH), (GBA_SCREEN_HEIGHT + 32));
+
+             lastSlideGrass = true;
+             lastSlideRoad = false;
+             lastSlideWater = false;
          }
      }
 
+     if (lastSlideGrass && timer > delaySlide) {
+         //grassSprite->moveTo(xPosition, yPosition);
+         grassSprite->moveTo((GBA_SCREEN_WIDTH), (GBA_SCREEN_HEIGHT + 32));
+         lastSlideGrass = !lastSlideGrass;
+     }
  }

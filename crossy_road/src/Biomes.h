@@ -15,28 +15,38 @@ class biomes {
 private:
     ///Declaration of sprites
     unique_ptr<Sprite> grassSprite;
-    unique_ptr<Sprite> roadSprite;
-    unique_ptr<Sprite> waterSprite;
+    //unique_ptr<Sprite> grassSlideSprite;
+    //unique_ptr<Sprite> roadSprite;
+    //unique_ptr<Sprite> waterSprite;
+
+    ///bool for sprite movement
+    bool lastSlideGrass;
+    bool lastSlideRoad;
+    bool lastSlideWater;
 
     ///timer for the slide 'animation'
-    int timer{};
+    int timer;
 
 public:
     ///Constructor
-    biomes(unique_ptr<Sprite> grassSprite,
-           unique_ptr<Sprite> roadSprite,
-           unique_ptr<Sprite> waterSprite
+    biomes( unique_ptr<Sprite> grassSprite//,
+            //unique_ptr<Sprite> grassSlideSprite
+           //unique_ptr<Sprite> roadSprite,
+           //unique_ptr<Sprite> waterSprite
            ) :
-            grassSprite(move(grassSprite)),
-            roadSprite(move(roadSprite)),
-            waterSprite(move(waterSprite)) {};
+            grassSprite(move(grassSprite))//,
+            //grassSlideSprite(move(grassSlideSprite))
+            //roadSprite(move(roadSprite)),
+            //waterSprite(move(waterSprite))
+            {};
 
     ///Getters
-    Sprite *getGrassSprite() { return grassSprite.get(); }
+    Sprite* getGrassSprite() {return grassSprite.get();}
+    //Sprite* getGrassSlideSprite() {return grassSlideSprite.get();}
 
-    Sprite *getRoadSprite() { return roadSprite.get(); }
+    //Sprite *getRoadSprite() { return roadSprite.get(); }
 
-    Sprite *getWaterSprite() { return waterSprite.get(); }
+    //Sprite *getWaterSprite() { return waterSprite.get(); }
 
     ///Tick function for key presses
     void tick(u16 keys);
