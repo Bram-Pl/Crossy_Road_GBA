@@ -9,6 +9,9 @@
 
 #include "GameScreen.h"
 
+///Shared palette
+#include "../sprites/sharedPalette.c"
+
 ///bird includes
 #include "../sprites/bird/birdForward.c"
 #include "../sprites/bird/birdForwardMove.c"
@@ -16,17 +19,16 @@
 #include "../sprites/bird/birdLeftMove.c"
 #include "../sprites/bird/birdRight.c"
 #include "../sprites/bird/birdRightMove.c"
-#include "../sprites/shared.c"
 
 ///biomes includes
-#include "../biomes/Grass/grass.cpp"
-#include "../biomes/Grass/grassSlide.cpp"
-#include "../biomes/Grass/tree.cpp"
-#include "../biomes/Road/road.cpp"
-#include "../biomes/Road/car.cpp"
-#include "../biomes/Water/water.cpp"
-#include "../biomes/Water/treetrunk.cpp"
-#include "../biomes/Water/waterlily.cpp"
+#include "../sprites/biomes/Grass/grass.c"
+#include "../sprites/biomes/Grass/grassSlide.cpp"
+#include "../sprites/biomes/Grass/tree.cpp"
+#include "../sprites/biomes/Road/road.cpp"
+#include "../sprites/biomes/Road/car.cpp"
+#include "../sprites/biomes/Water/water.cpp"
+#include "../sprites/biomes/Water/treetrunk.cpp"
+#include "../sprites/biomes/Water/waterlily.cpp"
 #include "biomes.h"
 
 ///Load sprites into vector
@@ -41,7 +43,8 @@ std::vector<Sprite *> GameScreen::sprites() {
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
     sprites.push_back(birdPlayer->getbirdRightSprite());
     sprites.push_back(birdPlayer->getbirdRightMoveSprite());
-    grass.get();
+    sprites.push_back(birdPlayer->getGrassBiome());
+
     //sprites.push_back(biomesSlider->getGrassSprite());
     //sprites.push_back(biomesSlider->getGrassSprite());
     //sprites.push_back(biomesSlider->getGrassSlideSprite());
@@ -65,7 +68,7 @@ void GameScreen::load() {
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1;
 
     ///Set colour palette for foreground(sprites) and background
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPalettePal, sizeof(sharedPalettePal)));
 
     ///Add birdPlayer to the game and call the possible sprites, only birdForward is visible in the screen
     birdPlayer = std::unique_ptr<bird>(new bird(        builder //Forward Bird
@@ -97,6 +100,11 @@ void GameScreen::load() {
                                                             .withData(birdRightMoveTiles, sizeof(birdRightMoveTiles))
                                                             .withSize(SIZE_32_32)
                                                             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
+                                                            .buildPtr(),
+                                                        builder
+                                                            .withData(GrassTiles, sizeof(GrassTiles))
+                                                            .withSize(SIZE_64_32)
+                                                            .withLocation(0, (GBA_SCREEN_HEIGHT-32))
                                                             .buildPtr()));
 
 
@@ -126,11 +134,13 @@ void GameScreen::load() {
 
     ));
 
- */                                                      grass = builder
-                                                                .withData(GrassTiles, sizeof(GrassTiles))
-                                                                .withSize(SIZE_240_32)
-                                                                .withLocation((5), (3))
-                                                                .buildPtr();
+                */
+
+     /*grass = builder
+        .withData(GrassTiles, sizeof(GrassTiles))
+        .withSize(SIZE_240_32)
+        .withLocation(0, 50)
+        .buildPtr();*/
 
 
 
@@ -140,6 +150,7 @@ void GameScreen::load() {
 void GameScreen::tick(u16 keys) {
     ///Display the current score
     TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
+
 
     ///Run the tick() function of birdPlayer
     birdPlayer->tick(keys);
