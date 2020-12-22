@@ -131,6 +131,7 @@ void Sprite::setAttributesBasedOnSize(SpriteSize size) {
         case SIZE_8_32:  size_bits = 1; shape_bits = 2; w = 8; h = 32; animation_offset = 4; break;
         case SIZE_16_32: size_bits = 2; shape_bits = 2; w = 16; h = 32; animation_offset = 8; break;
         case SIZE_32_64: size_bits = 3; shape_bits = 2; w = 32; h = 64; animation_offset = 32; break;
+        case SIZE_240_32: size_bits = 4; shape_bits = 3; w = 240; h = 32; animation_offset = 32; break;
     }
 }
 

@@ -18,6 +18,7 @@ private:
     std::unique_ptr<Background> bgBasic;
     std::unique_ptr<bird> birdPlayer;
     std::unique_ptr<biomes> biomesSlider;
+    std::unique_ptr<Sprite> grass;
 
     ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;

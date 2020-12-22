@@ -16,7 +16,7 @@
 #include "../sprites/bird/birdLeftMove.c"
 #include "../sprites/bird/birdRight.c"
 #include "../sprites/bird/birdRightMove.c"
-#include "../sprites/bird/shared.c"
+#include "../sprites/shared.c"
 
 ///biomes includes
 #include "../biomes/Grass/grass.cpp"
@@ -33,7 +33,7 @@
 std::vector<Sprite *> GameScreen::sprites() {
     std::vector<Sprite *> sprites;
 
-    sprites.push_back(biomesSlider->getGrassSprite());
+    //sprites.push_back(biomesSlider->getGrassSprite());
 
     sprites.push_back(birdPlayer->getBirdForwardSprite());
     sprites.push_back(birdPlayer->getbirdForwardMoveSprite());
@@ -41,8 +41,8 @@ std::vector<Sprite *> GameScreen::sprites() {
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
     sprites.push_back(birdPlayer->getbirdRightSprite());
     sprites.push_back(birdPlayer->getbirdRightMoveSprite());
-
-    sprites.push_back(biomesSlider->getGrassSprite());
+    grass.get();
+    //sprites.push_back(biomesSlider->getGrassSprite());
     //sprites.push_back(biomesSlider->getGrassSprite());
     //sprites.push_back(biomesSlider->getGrassSlideSprite());
     //sprites.push_back(biomesSlider->getRoadSprite());
@@ -100,20 +100,20 @@ void GameScreen::load() {
                                                             .buildPtr()));
 
 
-    biomesSlider = std::unique_ptr<biomes>(new biomes(                  builder //Grass
+ /*   biomesSlider = std::unique_ptr<biomes>(new biomes(                  builder //Grass
                                                             .withData(GrassSlideTiles, sizeof(GrassSlideTiles))
                                                             .withSize(SIZE_240_32)
                                                             .withLocation((GBA_SCREEN_WIDTH + 32), GBA_SCREEN_HEIGHT + (1*32))
                                                             .buildPtr()//,
-/*
+
                                                                         builder //Grass Slide
                                                               .withData(GrassSlideTiles, sizeof(GrassSlideTiles))
                                                               .withSize(SIZE_32_32)
                                                               .withLocation((GBA_SCREEN_WIDTH/2 - 16), (GBA_SCREEN_HEIGHT - 32))
                                                               .buildPtr()
-*/
+
                                                               ));
-                                                            /*  builder
+                                                            builder
                                                                   .withData(RoadTiles, sizeof(RoadTiles))
                                                                   .withSize(SIZE_240_32)
                                                                   .withLocation(GBA_SCREEN_WIDTH, GBA_SCREEN_HEIGHT + (2*32))
@@ -126,7 +126,14 @@ void GameScreen::load() {
 
     ));
 
-*/
+ */                                                      grass = builder
+                                                                .withData(GrassTiles, sizeof(GrassTiles))
+                                                                .withSize(SIZE_240_32)
+                                                                .withLocation((5), (3))
+                                                                .buildPtr();
+
+
+
 }
 
 ///Every tick in game
