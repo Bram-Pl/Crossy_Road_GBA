@@ -104,7 +104,7 @@ void GameScreen::load() {
                                                         builder
                                                             .withData(GrassTiles, sizeof(GrassTiles))
                                                             .withSize(SIZE_64_32)
-                                                            .withLocation(0, (GBA_SCREEN_HEIGHT-32))
+                                                            .withLocation( 0 ,  GBA_SCREEN_HEIGHT-160)
                                                             .buildPtr()));
 
 
