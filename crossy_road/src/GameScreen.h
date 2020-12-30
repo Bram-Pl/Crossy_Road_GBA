@@ -19,12 +19,6 @@ private:
     std::unique_ptr<bird> birdPlayer;
     std::unique_ptr<biomes> biomesSlider;
 
-    ///PROOF OF CONCEPT
-    std::unique_ptr<Sprite> Grass_0_0;
-    std::unique_ptr<Sprite> Grass_0_1;
-    std::unique_ptr<Sprite> Grass_0_2;
-    std::unique_ptr<Sprite> Grass_0_3;
-
     ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;
 

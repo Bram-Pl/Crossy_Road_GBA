@@ -17,8 +17,6 @@
 #include "../sprites/bird/birdForwardMove.c"
 #include "../sprites/bird/birdLeft.c"
 #include "../sprites/bird/birdLeftMove.c"
-#include "../sprites/bird/birdRight.c"
-#include "../sprites/bird/birdRightMove.c"
 
 ///biomes includes
 #include "../sprites/biomes/Grass/grass.c"
@@ -39,14 +37,6 @@ std::vector<Sprite *> GameScreen::sprites() {
     sprites.push_back(birdPlayer->getbirdForwardMoveSprite());
     sprites.push_back(birdPlayer->getbirdLeftSprite());
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
-    sprites.push_back(birdPlayer->getbirdRightSprite());
-    sprites.push_back(birdPlayer->getbirdRightMoveSprite());
-
-    ///PROOF OF CONCEPT
-    sprites.push_back(Grass_0_0.get());
-    sprites.push_back(Grass_0_1.get());
-    sprites.push_back(Grass_0_2.get());
-    sprites.push_back(Grass_0_3.get());
 
     //sprites.push_back(biomesSlider->getGrassSprite());
     //sprites.push_back(biomesSlider->getGrassSprite());
@@ -93,39 +83,7 @@ void GameScreen::load() {
                                                             .withData(birdLeftMoveTiles, sizeof(birdLeftMoveTiles))
                                                             .withSize(SIZE_32_32)
                                                             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
-                                                            .buildPtr(),
-                                                        builder //Right Bird
-                                                            .withData(birdRightTiles, sizeof(birdRightTiles))
-                                                            .withSize(SIZE_32_32)
-                                                            .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
-                                                            .buildPtr(),
-                                                        builder //Right Move Bird
-                                                            .withData(birdRightMoveTiles, sizeof(birdRightMoveTiles))
-                                                            .withSize(SIZE_32_32)
-                                                            .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
                                                             .buildPtr()));
-
-    ///PROOF OF CONCEPT
-    Grass_0_0 = builder
-            .withData(GrassTiles, sizeof(GrassTiles))
-            .withSize(SIZE_64_32)
-            .withLocation(0, (GBA_SCREEN_HEIGHT - 32))
-            .buildPtr();
-    Grass_0_1 = builder
-            .withData(GrassTiles, sizeof(GrassTiles))
-            .withSize(SIZE_64_32)
-            .withLocation(64, (GBA_SCREEN_HEIGHT - 32))
-            .buildPtr();
-    Grass_0_2 = builder
-            .withData(GrassTiles, sizeof(GrassTiles))
-            .withSize(SIZE_64_32)
-            .withLocation(128, (GBA_SCREEN_HEIGHT - 32))
-            .buildPtr();
-    Grass_0_3 = builder
-            .withData(GrassTiles, sizeof(GrassTiles))
-            .withSize(SIZE_64_32)
-            .withLocation(192, (GBA_SCREEN_HEIGHT - 32))
-            .buildPtr();
 
 
  /*   biomesSlider = std::unique_ptr<biomes>(new biomes(                  builder //Grass

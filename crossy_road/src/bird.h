@@ -16,8 +16,6 @@ private:
     std::unique_ptr<Sprite> birdForwardMoveSprite;
     std::unique_ptr<Sprite> birdLeftSprite;
     std::unique_ptr<Sprite> birdLeftMoveSprite;
-    std::unique_ptr<Sprite> birdRightSprite;
-    std::unique_ptr<Sprite> birdRightMoveSprite;
 
     ///boolean to check the last movement -- influences the sprite displayed
     bool lastMoveForward;
@@ -32,15 +30,11 @@ public:
     bird(   std::unique_ptr<Sprite> birdForwardSprite,
             std::unique_ptr<Sprite> birdForwardMoveSprite,
             std::unique_ptr<Sprite> birdLeftSprite,
-            std::unique_ptr<Sprite> birdLeftMoveSprite,
-            std::unique_ptr<Sprite> birdRightSprite,
-            std::unique_ptr<Sprite> birdRightMoveSprite) :
+            std::unique_ptr<Sprite> birdLeftMoveSprite) :
             birdForwardSprite(std::move(birdForwardSprite)),
             birdForwardMoveSprite(std::move(birdForwardMoveSprite)),
             birdLeftSprite(std::move(birdLeftSprite)),
-            birdLeftMoveSprite(std::move(birdLeftMoveSprite)),
-            birdRightSprite(std::move(birdRightSprite)),
-            birdRightMoveSprite(std::move(birdRightMoveSprite)) {};
+            birdLeftMoveSprite(std::move(birdLeftMoveSprite)) {};
 
 
     ///Getters
@@ -48,8 +42,6 @@ public:
     Sprite* getbirdForwardMoveSprite() {return birdForwardMoveSprite.get();}
     Sprite* getbirdLeftSprite() {return birdLeftSprite.get();}
     Sprite* getbirdLeftMoveSprite() {return birdLeftMoveSprite.get();}
-    Sprite* getbirdRightSprite() {return birdRightSprite.get();}
-    Sprite* getbirdRightMoveSprite() {return birdRightMoveSprite.get();}
 
     int score = 0;
 
