@@ -18,7 +18,6 @@ private:
     std::unique_ptr<Sprite> birdLeftMoveSprite;
     std::unique_ptr<Sprite> birdRightSprite;
     std::unique_ptr<Sprite> birdRightMoveSprite;
-    std::unique_ptr<Sprite> grassBiomeSprite;
 
     ///boolean to check the last movement -- influences the sprite displayed
     bool lastMoveForward;
@@ -35,15 +34,13 @@ public:
             std::unique_ptr<Sprite> birdLeftSprite,
             std::unique_ptr<Sprite> birdLeftMoveSprite,
             std::unique_ptr<Sprite> birdRightSprite,
-            std::unique_ptr<Sprite> birdRightMoveSprite,
-            std::unique_ptr<Sprite> grassBiomeSprite) :
+            std::unique_ptr<Sprite> birdRightMoveSprite) :
             birdForwardSprite(std::move(birdForwardSprite)),
             birdForwardMoveSprite(std::move(birdForwardMoveSprite)),
             birdLeftSprite(std::move(birdLeftSprite)),
             birdLeftMoveSprite(std::move(birdLeftMoveSprite)),
             birdRightSprite(std::move(birdRightSprite)),
-            birdRightMoveSprite(std::move(birdRightMoveSprite)),
-            grassBiomeSprite(std::move(grassBiomeSprite)) {};
+            birdRightMoveSprite(std::move(birdRightMoveSprite)) {};
 
 
     ///Getters
@@ -53,7 +50,6 @@ public:
     Sprite* getbirdLeftMoveSprite() {return birdLeftMoveSprite.get();}
     Sprite* getbirdRightSprite() {return birdRightSprite.get();}
     Sprite* getbirdRightMoveSprite() {return birdRightMoveSprite.get();}
-    Sprite* getGrassBiome() {return grassBiomeSprite.get();}
 
     int score = 0;
 
