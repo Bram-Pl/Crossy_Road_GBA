@@ -8,6 +8,7 @@
 #include <libgba-sprite-engine/gba_engine.h>
 
 #include "GameScreen.h"
+#include "../music/InGame.h"
 
 ///Shared palette
 #include "../sprites/sharedPalette.c"
@@ -18,17 +19,6 @@
 #include "../sprites/bird/birdLeft.c"
 #include "../sprites/bird/birdLeftMove.c"
 
-///biomes includes
-#include "../sprites/biomes/Grass/grass.c"
-#include "../sprites/biomes/Grass/grassSlide.cpp"
-#include "../sprites/biomes/Grass/tree.cpp"
-#include "../sprites/biomes/Road/road.cpp"
-#include "../sprites/biomes/Road/car.cpp"
-#include "../sprites/biomes/Water/water.cpp"
-#include "../sprites/biomes/Water/treetrunk.cpp"
-#include "../sprites/biomes/Water/waterlily.cpp"
-#include "biomes.h"
-
 ///Load sprites into vector
 std::vector<Sprite *> GameScreen::sprites() {
     std::vector<Sprite *> sprites;
@@ -37,12 +27,6 @@ std::vector<Sprite *> GameScreen::sprites() {
     sprites.push_back(birdPlayer->getbirdForwardMoveSprite());
     sprites.push_back(birdPlayer->getbirdLeftSprite());
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
-
-    //sprites.push_back(biomesSlider->getGrassSprite());
-    //sprites.push_back(biomesSlider->getGrassSprite());
-    //sprites.push_back(biomesSlider->getGrassSlideSprite());
-    //sprites.push_back(biomesSlider->getRoadSprite());
-    //sprites.push_back(biomesSlider->getWaterSprite());
 
     return{sprites};
 }
@@ -85,50 +69,13 @@ void GameScreen::load() {
                                                             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
                                                             .buildPtr()));
 
-
- /*   biomesSlider = std::unique_ptr<biomes>(new biomes(                  builder //Grass
-                                                            .withData(GrassSlideTiles, sizeof(GrassSlideTiles))
-                                                            .withSize(SIZE_240_32)
-                                                            .withLocation((GBA_SCREEN_WIDTH + 32), GBA_SCREEN_HEIGHT + (1*32))
-                                                            .buildPtr()//,
-
-                                                                        builder //Grass Slide
-                                                              .withData(GrassSlideTiles, sizeof(GrassSlideTiles))
-                                                              .withSize(SIZE_32_32)
-                                                              .withLocation((GBA_SCREEN_WIDTH/2 - 16), (GBA_SCREEN_HEIGHT - 32))
-                                                              .buildPtr()
-
-                                                              ));
-                                                            builder
-                                                                  .withData(RoadTiles, sizeof(RoadTiles))
-                                                                  .withSize(SIZE_240_32)
-                                                                  .withLocation(GBA_SCREEN_WIDTH, GBA_SCREEN_HEIGHT + (2*32))
-                                                                  .build(),
-                                                          builder
-                                                                  .withData(WaterTiles, sizeof(WaterTiles))
-                                                                  .withSize(SIZE_240_32)
-                                                                  .withLocation(GBA_SCREEN_WIDTH, GBA_SCREEN_HEIGHT + (2*32))
-                                                                  .build()));
-
-    ));
-
-                */
-
-     /*grass = builder
-        .withData(GrassTiles, sizeof(GrassTiles))
-        .withSize(SIZE_240_32)
-        .withLocation(0, 50)
-        .buildPtr();*/
-
-
-
+    engine->enqueueMusic(InGame, InGame_bytes);
 }
 
 ///Every tick in game
 void GameScreen::tick(u16 keys) {
     ///Display the current score
     TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
-
 
     ///Run the tick() function of birdPlayer
     birdPlayer->tick(keys);

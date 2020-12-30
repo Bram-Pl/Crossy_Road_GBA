@@ -14,7 +14,7 @@
 #include "../sprites/cloud/cloud0.c"
 #include "../sprites/cloud/cloud1.c"
 #include "../sprites/cloud/cloud2.c"
-#include "../music/CrossyRoadTheme.h"
+#include "../music/CrossyRoadSoundTrack.h"
 
 #define cloudTick 5
 
@@ -95,7 +95,7 @@ void HomeStartScene::load() {
 
     ///Play music
     engine->getTimer()->start();
-    engine->enqueueMusic(CrossyRoadTheme, CrossyRoadTheme_bytes);
+    engine->enqueueMusic(CrossyRoadSoundTrack, CrossyRoadSoundTrack_bytes);
 }
 
 ///Every tick in game
