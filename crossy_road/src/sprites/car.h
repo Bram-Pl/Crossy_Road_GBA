@@ -11,11 +11,11 @@ class car {
 private:
     std::unique_ptr<Sprite> sprite;
 
-    int x_position;
-    int y_position;
-
 public:
     car(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)) {}
+
+    int x_position;
+    int y_position;
 
     void tick();
     bool isOffScreen() {return sprite->isOffScreen(); }

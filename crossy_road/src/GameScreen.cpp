@@ -101,6 +101,7 @@ void GameScreen::load() {
 
 ///Every tick in game
 void GameScreen::tick(u16 keys) {
+
     ///Display the current score
     TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
 
@@ -109,17 +110,32 @@ void GameScreen::tick(u16 keys) {
 
     for(auto &c : cars) {
         c->tick();
+
+        if(globalYPos != birdPlayer->virtualYPos){
+
+            c->y_position = c->y_position + 32;
+        }
     }
+    globalYPos = birdPlayer->virtualYPos;
 
     if(!generateOne){
         cars.push_back(createCar());
         auto &c = cars.at(cars.size() - 1);
-        c->setPos(-32,(GBA_SCREEN_HEIGHT - 32));
+        c->setPos(-32,(GBA_SCREEN_HEIGHT - 128));
+        cars.push_back(createCar());
+        auto &d = cars.at(cars.size() - 1);
+        d->setPos(-86,(GBA_SCREEN_HEIGHT - 128));
+        cars.push_back(createCar());
+        auto &e = cars.at(cars.size() - 1);
+        e->setPos(-350,(GBA_SCREEN_HEIGHT - 128));
         generateOne = true;
         engine.get()->updateSpritesInScene();
     }
 
     checkCollision();
+    if(collision){
+        ///END THE GAME AND GO TO END SCREEN WITH SCORE
+    }
 }
 
 void GameScreen::checkCollision(){

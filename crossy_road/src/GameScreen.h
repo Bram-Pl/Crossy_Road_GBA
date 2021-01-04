@@ -31,6 +31,7 @@ private:
 
     bool collision = false;
     void checkCollision();
+    int globalYPos = (GBA_SCREEN_HEIGHT - 32);
 
 public:
     ///Constructor

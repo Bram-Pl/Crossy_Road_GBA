@@ -29,6 +29,8 @@ void bird::tick(u16 keys) {
             lastMoveRight = false;
             lastMoveLeft = false;
 
+            virtualYPos = virtualYPos + 32;
+
             score++;
         }
     }
