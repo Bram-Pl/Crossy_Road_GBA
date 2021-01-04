@@ -29,6 +29,9 @@ private:
 
     bool generateOne = false;
 
+    bool collision = false;
+    void checkCollision();
+
 public:
     ///Constructor
     GameScreen(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}

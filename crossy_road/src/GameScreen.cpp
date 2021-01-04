@@ -109,9 +109,6 @@ void GameScreen::tick(u16 keys) {
 
     for(auto &c : cars) {
         c->tick();
-        if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite())){
-            birdPlayer->score = 69;
-        }
     }
 
     if(!generateOne){
@@ -120,5 +117,20 @@ void GameScreen::tick(u16 keys) {
         c->setPos(-32,(GBA_SCREEN_HEIGHT - 32));
         generateOne = true;
         engine.get()->updateSpritesInScene();
+    }
+
+    checkCollision();
+}
+
+void GameScreen::checkCollision(){
+    for(auto &c : cars) {
+        if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite()) ||
+           birdPlayer->getbirdForwardMoveSprite()->collidesWith(*c->getSprite()) ||
+           birdPlayer->getbirdLeftSprite()->collidesWith(*c->getSprite()) ||
+           birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
+
+            birdPlayer->score = 69;
+            collision = true;
+        }
     }
 }
