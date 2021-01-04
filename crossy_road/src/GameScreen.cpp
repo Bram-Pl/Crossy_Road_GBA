@@ -6,12 +6,14 @@
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
 #include <libgba-sprite-engine/gba_engine.h>
+#include <algorithm>
 
 #include "GameScreen.h"
 #include "../music/InGame.h"
 
 ///Shared palette
 #include "../sprites/sharedPalette.c"
+#include "../sprites/car/Car.c"
 
 ///bird includes
 #include "../sprites/bird/birdForward.c"
@@ -28,7 +30,13 @@ std::vector<Sprite *> GameScreen::sprites() {
     sprites.push_back(birdPlayer->getbirdLeftSprite());
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
 
-    return{sprites};
+    for(auto& c : cars){
+        sprites.push_back(c->getSprite());
+    }
+
+    sprites.push_back(someCarSprite.get());
+
+    return sprites;
 }
 
 ///Get background in game, may be removed if backgrounds are sprite ***
@@ -38,6 +46,18 @@ std::vector<Background *> GameScreen::backgrounds() {
     };
 }
 
+void GameScreen::removeCarsOffScreen() {
+    cars.erase(
+            std::remove_if(cars.begin(), cars.end(), [](std::unique_ptr<car> &s) {return s->isOffScreen(); }),
+            cars.end());
+}
+
+std::unique_ptr<car> GameScreen::createCar(){
+    return std::unique_ptr<car>(new car(builder
+    .withLocation((30),(30))
+    .buildWithDataOf(*someCarSprite.get())));
+}
+
 ///When loading the scene this happens
 void GameScreen::load() {
 
@@ -45,7 +65,7 @@ void GameScreen::load() {
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1;
 
     ///Set colour palette for foreground(sprites) and background
-    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPalettePal, sizeof(sharedPalettePal)));
+    foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
 
     ///Add birdPlayer to the game and call the possible sprites, only birdForward is visible in the screen
     birdPlayer = std::unique_ptr<bird>(new bird(        builder //Forward Bird
@@ -69,6 +89,13 @@ void GameScreen::load() {
                                                             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
                                                             .buildPtr()));
 
+    someCarSprite = builder
+            .withData(CarTiles, sizeof(CarTiles))
+            .withSize(SIZE_32_32)
+            .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
+            .buildPtr();
+
+
     engine->enqueueMusic(InGame, InGame_bytes);
 }
 
@@ -77,6 +104,18 @@ void GameScreen::tick(u16 keys) {
     ///Display the current score
     TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
 
-    ///Run the tick() function of birdPlayer
+    ///Run the tick() method of birdPlayer and cars
     birdPlayer->tick(keys);
+
+    for(auto &c : cars) {
+        c->tick();
+    }
+
+    if(!generateOne){
+        cars.push_back(createCar());
+        auto &c = cars.at(cars.size() - 1);
+        c->setPos(30,30);
+        generateOne = true;
+        engine.get()->updateSpritesInScene();
+    }
 }

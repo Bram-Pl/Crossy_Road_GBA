@@ -9,18 +9,25 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/gba_engine.h>
 
-#include "bird.h"
-#include "biomes.h"
+#include "sprites/bird.h"
+#include "sprites/car.h"
 
 class GameScreen : public Scene {
 private:
     ///Declaration of background and sprites
     std::unique_ptr<Background> bgBasic;
     std::unique_ptr<bird> birdPlayer;
-    std::unique_ptr<biomes> biomesSlider;
 
     ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;
+
+    ///Car
+    std::unique_ptr<Sprite> someCarSprite;
+    std::vector<std::unique_ptr<car>> cars;
+    std::unique_ptr<car> createCar();
+    void removeCarsOffScreen();
+
+    bool generateOne = false;
 
 public:
     ///Constructor

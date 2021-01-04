@@ -7,7 +7,7 @@
 //	+ 16 tiles not compressed
 //	Total size: 1024 = 1024
 //
-//	Time-stamp: 2020-12-17, 13:51:36
+//	Time-stamp: 2021-01-04, 17:37:06
 //	Exported by Cearn's GBA Image Transmogrifier, v0.8.6
 //	( http://www.coranac.com/projects/#grit )
 //

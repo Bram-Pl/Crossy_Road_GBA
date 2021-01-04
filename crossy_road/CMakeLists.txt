@@ -1,7 +1,7 @@
 project(crossy_road)
 
 add_executable(${PROJECT_NAME}.elf
-        src/main.cpp src/HomeStartScene.cpp src/HomeStartScene.h src/GameScreen.cpp src/GameScreen.h src/bird.cpp src/bird.h)
+        src/main.cpp src/HomeStartScene.cpp src/HomeStartScene.h src/GameScreen.cpp src/GameScreen.h src/sprites/bird.cpp src/sprites/bird.h src/sprites/car.cpp src/sprites/car.h)
 
 target_link_libraries(${PROJECT_NAME}.elf gba-sprite-engine)
 
