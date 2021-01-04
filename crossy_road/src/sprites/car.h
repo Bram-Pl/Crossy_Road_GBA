@@ -11,8 +11,8 @@ class car {
 private:
     std::unique_ptr<Sprite> sprite;
 
-    short int x_position;
-    short int y_position;
+    int x_position;
+    int y_position;
 
 public:
     car(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)) {}
@@ -20,7 +20,7 @@ public:
     void tick();
     bool isOffScreen() {return sprite->isOffScreen(); }
     Sprite* getSprite() {return sprite.get(); }
-    void setPos(short int x, short int y);
+    void setPos(int x, int y);
 };
 
 

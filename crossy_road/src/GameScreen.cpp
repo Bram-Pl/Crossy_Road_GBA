@@ -109,12 +109,15 @@ void GameScreen::tick(u16 keys) {
 
     for(auto &c : cars) {
         c->tick();
+        if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite())){
+            birdPlayer->score = 69;
+        }
     }
 
     if(!generateOne){
         cars.push_back(createCar());
         auto &c = cars.at(cars.size() - 1);
-        c->setPos(30,30);
+        c->setPos(-32,(GBA_SCREEN_HEIGHT - 32));
         generateOne = true;
         engine.get()->updateSpritesInScene();
     }
