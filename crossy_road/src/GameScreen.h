@@ -8,9 +8,12 @@
 
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/gba_engine.h>
+#include <libgba-sprite-engine/sprites/affine_sprite.h>
 
 #include "sprites/bird.h"
 #include "sprites/car.h"
+#include "sprites/treeTrunk.h"
+#include "sprites/coin.h"
 
 class GameScreen : public Scene {
 private:
@@ -21,14 +24,25 @@ private:
     ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;
 
-    ///Car
+    ///CARS: Sprites and methods
     std::unique_ptr<Sprite> someCarSprite;
     std::vector<std::unique_ptr<car>> cars;
     std::unique_ptr<car> createCar();
-    void removeCarsOffScreen();
+    void removeCarsOffScreenDown();
+
+    ///TREETRUNK: Sprites and methods
+    std::unique_ptr<Sprite> someTreeTrunkSprite;
+    std::vector<std::unique_ptr<treeTrunk>> treeTrunks;
+    std::unique_ptr<treeTrunk> createTreeTrunk();
+    void removeTreeTrunksOffScreenDown();
+
+    ///COIN: Sprites and methods
+    std::unique_ptr<Sprite> someCoinSprite;
+    std::vector<std::unique_ptr<coin>> coins;
+    std::unique_ptr<coin> createCoin();
+    void removeCoinsOffScreenDown();
 
     bool generateOne = false;
-
     bool collision = false;
     void checkCollision();
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);

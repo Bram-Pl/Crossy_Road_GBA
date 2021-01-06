@@ -21,9 +21,9 @@ void bird::tick(u16 keys) {
 
             birdForwardMoveSprite->moveTo(xPosition, yPosition);
 
-            birdForwardSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-            birdLeftSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-            birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
+            birdForwardSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
+            birdLeftSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
+            birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
 
             lastMoveForward = true;
             lastMoveRight = false;
@@ -46,9 +46,9 @@ void bird::tick(u16 keys) {
         birdLeftMoveSprite->flipHorizontally(false);
         birdLeftMoveSprite->moveTo(xPosition ,yPosition);
 
-        birdForwardSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-        birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-        birdLeftSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
+        birdForwardSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
+        birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
+        birdLeftSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
 
         lastMoveForward = false;
         lastMoveLeft = true;
@@ -66,9 +66,9 @@ void bird::tick(u16 keys) {
         birdLeftMoveSprite->flipHorizontally(true);
         birdLeftMoveSprite->moveTo(xPosition ,yPosition);
 
-        birdForwardSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-        birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-        birdLeftSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
+        birdForwardSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
+        birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
+        birdLeftSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
 
         lastMoveForward = false;
         lastMoveLeft = false;
@@ -78,7 +78,7 @@ void bird::tick(u16 keys) {
     ///Stop the move forward sprite and replace with last movement forward sprite after 'delayfly' time generates the effect of 'flying' forward
     if(lastMoveForward && timer > delayFly){
         birdForwardSprite->moveTo(xPosition, yPosition);
-        birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
+        birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
         lastMoveForward = !lastMoveForward;
     }
 
@@ -86,7 +86,7 @@ void bird::tick(u16 keys) {
     if(lastMoveLeft && timer > delayFly){
         birdLeftSprite->flipHorizontally(false);
         birdLeftSprite->moveTo(xPosition, yPosition);
-        birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
+        birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
         lastMoveLeft = !lastMoveLeft;
     }
 
@@ -94,7 +94,7 @@ void bird::tick(u16 keys) {
     if(lastMoveRight && timer > delayFly){
         birdLeftSprite->flipHorizontally(true);
         birdLeftSprite->moveTo(xPosition, yPosition);
-        birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
+        birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
         lastMoveRight = !lastMoveRight;
     }
 }

@@ -36,6 +36,10 @@ bool Sprite::isOffScreen() {
     return x < 0 || x > GBA_SCREEN_WIDTH || y < 0 || y > GBA_SCREEN_HEIGHT;
 }
 
+bool Sprite::isOffScreenDown() {
+    return y > GBA_SCREEN_HEIGHT;
+}
+
 void Sprite::flipHorizontally(bool flip) {
     if(flip) {
         oam.attr1 |= ATTR1_HFLIP;

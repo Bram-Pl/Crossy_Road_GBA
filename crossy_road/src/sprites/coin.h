@@ -1,18 +1,19 @@
 //
-// Created by pless on 04/01/2021.
+// Created by pless on 06/01/2021.
 //
 
-#ifndef GBA_SPRITE_ENGINE_PROJECT_CAR_H
-#define GBA_SPRITE_ENGINE_PROJECT_CAR_H
+#ifndef GBA_SPRITE_ENGINE_PROJECT_COIN_H
+#define GBA_SPRITE_ENGINE_PROJECT_COIN_H
+
 
 #include <libgba-sprite-engine/sprites/sprite.h>
 
-class car {
+class coin {
 private:
     std::unique_ptr<Sprite> sprite;
 
 public:
-    car(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)) {}
+    coin(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)) {}
 
     int x_position;
     int y_position;
@@ -24,4 +25,4 @@ public:
 };
 
 
-#endif //GBA_SPRITE_ENGINE_PROJECT_CAR_H
+#endif //GBA_SPRITE_ENGINE_PROJECT_COIN_H

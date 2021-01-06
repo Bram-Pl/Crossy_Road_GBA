@@ -39,6 +39,11 @@ public:
         this->mapLayout = mapLayout;
     }
 
+    Background(int bgIndex, const void *data, int size, const void* map, int mapSize, int mapLayout)
+            : Background(bgIndex, data, size, map, mapSize) {
+        this->mapLayout = mapLayout;
+    }
+
     Background(int bgIndex, const void *data, int size, const void* map, int mapSize) : data(data), bgIndex(bgIndex), size(size), map(map), mapLayout(MAPLAYOUT_32X32),
                                                                                         screenBlockIndex(0), charBlockIndex(bgIndex), mapSize(mapSize) {}
     virtual void persist();

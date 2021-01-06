@@ -109,6 +109,7 @@ public:
     u32 getCurrentFrame() { return currentFrame; }
     bool isAnimating() { return animating; };
     bool isOffScreen();
+    bool isOffScreenDown();
 
     friend class SpriteManager;
 };

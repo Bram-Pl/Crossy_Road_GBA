@@ -7,34 +7,48 @@
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <algorithm>
+#include <iostream>
 
 #include "GameScreen.h"
 #include "../music/InGame.h"
 
-///Shared palette
-#include "../sprites/sharedPalette.c"
-#include "../sprites/car/Car.c"
-
-///bird includes
+///Sprites Includes
+#include "../sprites/shared.c"
 #include "../sprites/bird/birdForward.c"
 #include "../sprites/bird/birdForwardMove.c"
 #include "../sprites/bird/birdLeft.c"
 #include "../sprites/bird/birdLeftMove.c"
+#include "../sprites/car/Car.c"
+#include "../sprites/treetrunk/TreeTrunk.c"
+#include "../sprites/coin/coin.c"
 
 ///Load sprites into vector
 std::vector<Sprite *> GameScreen::sprites() {
     std::vector<Sprite *> sprites;
 
+    ///BIRDPLAYER: get sprites for all the birds and add to vector
     sprites.push_back(birdPlayer->getBirdForwardSprite());
     sprites.push_back(birdPlayer->getbirdForwardMoveSprite());
     sprites.push_back(birdPlayer->getbirdLeftSprite());
     sprites.push_back(birdPlayer->getbirdLeftMoveSprite());
 
+    ///CARS: get sprites for all the cars and add to vector
     for(auto& c : cars){
         sprites.push_back(c->getSprite());
     }
-
     sprites.push_back(someCarSprite.get());
+
+    ///treeTrunk: get sprites for all the treetrunks and add to vector
+    for(auto& t : treeTrunks){
+        sprites.push_back((t->getSprite()));
+    }
+    sprites.push_back(someTreeTrunkSprite.get());
+
+    ///coin: get sprites for all the coins and add to vector
+    for(auto& c : coins){
+        sprites.push_back((c->getSprite()));
+    }
+    sprites.push_back(someCoinSprite.get());
 
     return sprites;
 }
@@ -46,17 +60,69 @@ std::vector<Background *> GameScreen::backgrounds() {
     };
 }
 
-void GameScreen::removeCarsOffScreen() {
+#pragma region Car Methods
+///CARS: Method to remove cars if they are off screen
+void GameScreen::removeCarsOffScreenDown(){
+    int sizeOfCars = cars.size();
+
     cars.erase(
-            std::remove_if(cars.begin(), cars.end(), [](std::unique_ptr<car> &s) {return s->isOffScreen(); }),
+            std::remove_if(cars.begin(), cars.end(), [](std::unique_ptr<car> &c) { return c->isOffScreenDown(); }),
             cars.end());
+
+    if(sizeOfCars > cars.size()){
+        engine.get()->updateSpritesInScene();
+    }
 }
 
+///CARS: Call method to create a single car
 std::unique_ptr<car> GameScreen::createCar(){
     return std::unique_ptr<car>(new car(builder
-    .withLocation((30),(30))
     .buildWithDataOf(*someCarSprite.get())));
 }
+#pragma endregion Cars
+
+#pragma region TreeTrunks Methods
+///CARS: Method to remove cars if they are off screen
+void GameScreen::removeTreeTrunksOffScreenDown() {
+    int sizeOfTreeTrunks = treeTrunks.size();
+
+    treeTrunks.erase(
+            std::remove_if(treeTrunks.begin(), treeTrunks.end(), [](std::unique_ptr<treeTrunk> &t) { return t->isOffScreenDown(); }),
+            treeTrunks.end());
+
+    if(sizeOfTreeTrunks > treeTrunks.size()){
+        engine.get()->updateSpritesInScene();
+    }
+    //engine.get()->updateSpritesInScene(); WHEN Executed EVERY time, we get moon walking chicken...
+}
+
+///CARS: Call method to create a single treeTrunk
+std::unique_ptr<treeTrunk> GameScreen::createTreeTrunk(){
+    return std::unique_ptr<treeTrunk>(new treeTrunk(builder
+        .buildWithDataOf(*someTreeTrunkSprite.get())));
+}
+#pragma endregion TreeTrunks
+
+#pragma region Coins Methods
+///CARS: Method to remove cars if they are off screen
+void GameScreen::removeCoinsOffScreenDown() {
+    int sizeOfCoins = coins.size();
+
+    coins.erase(
+            std::remove_if(coins.begin(), coins.end(), [](std::unique_ptr<coin> &c) { return c->isOffScreenDown(); }),
+            coins.end());
+
+    if(sizeOfCoins > coins.size()){
+        engine.get()->updateSpritesInScene();
+    }
+}
+
+///COINS: Call method to create a single coin
+std::unique_ptr<coin> GameScreen::createCoin() {
+    return std::unique_ptr<coin>(new coin(builder
+        .buildWithDataOf(*someCoinSprite.get())));
+}
+#pragma endregion Coins
 
 ///When loading the scene this happens
 void GameScreen::load() {
@@ -89,13 +155,29 @@ void GameScreen::load() {
                                                             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
                                                             .buildPtr()));
 
+    ///CARS: add template for car, is used to ".buildWithDataOf()"
     someCarSprite = builder
             .withData(CarTiles, sizeof(CarTiles))
             .withSize(SIZE_32_32)
             .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
             .buildPtr();
 
+    ///TREETRUNK: add template for treeTrunk, is used to ".buildWithDataOf()"
+    someTreeTrunkSprite = builder
+            .withData(TreeTrunkTiles, sizeof(TreeTrunkTiles))
+            .withSize(SIZE_32_16)
+            .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
+            .buildPtr();
 
+    ///COIN: add template for coin, is used to ".buildWithDataOf()"
+    someCoinSprite = builder
+            .withData(CoinTiles, sizeof(CoinTiles))
+            .withSize(SIZE_32_32)
+            .withLocation(GBA_SCREEN_WIDTH + 32, GBA_SCREEN_HEIGHT + 32)
+            .buildPtr();
+
+
+    ///Enqueue music to start playing
     engine->enqueueMusic(InGame, InGame_bytes);
 }
 
@@ -108,37 +190,85 @@ void GameScreen::tick(u16 keys) {
     ///Run the tick() method of birdPlayer and cars
     birdPlayer->tick(keys);
 
+#pragma region movement sprites
+
+    ///CARS: Check all cars and move their respective Y position according the birds movement
     for(auto &c : cars) {
         c->tick();
 
         if(globalYPos != birdPlayer->virtualYPos){
-
             c->y_position = c->y_position + 32;
         }
     }
+    ///TREETRUNKS: Check all treetrunks and move their respective Y position according the birds movement
+    for(auto &t : treeTrunks) {
+        t->tick();
+
+        if(globalYPos != birdPlayer->virtualYPos){
+            t->y_position = t->y_position + 32;
+        }
+    }
+
+    ///COINS: Check all coins and move their respective Y position according the birds movement
+    for(auto &c : coins) {
+        c->tick();
+
+        if(globalYPos != birdPlayer->virtualYPos){
+            c->y_position = c->y_position + 32;
+        }
+    }
+
     globalYPos = birdPlayer->virtualYPos;
 
+#pragma endregion movement sprites
+
+    ///GENERATE SPRITES FOR MAP: First call to generate three cars, one tree trunk, two coins
     if(!generateOne){
         cars.push_back(createCar());
-        auto &c = cars.at(cars.size() - 1);
-        c->setPos(-32,(GBA_SCREEN_HEIGHT - 128));
+        auto &c1 = cars.at(cars.size() - 1);
+        c1->setPos(-32,(GBA_SCREEN_HEIGHT - 128));
         cars.push_back(createCar());
-        auto &d = cars.at(cars.size() - 1);
-        d->setPos(-86,(GBA_SCREEN_HEIGHT - 128));
+        auto &c2 = cars.at(cars.size() - 1);
+        c2->setPos(-86,(GBA_SCREEN_HEIGHT - 128));
         cars.push_back(createCar());
-        auto &e = cars.at(cars.size() - 1);
-        e->setPos(-350,(GBA_SCREEN_HEIGHT - 128));
+        auto &c3 = cars.at(cars.size() - 1);
+        c3->setPos(-350,(GBA_SCREEN_HEIGHT - 128));
         generateOne = true;
+
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t1 = treeTrunks.at(treeTrunks.size()-1);
+        t1->setPos(GBA_SCREEN_WIDTH, (GBA_SCREEN_HEIGHT - 56));
+
+        coins.push_back(createCoin());
+        auto &co1 = coins.at(coins.size()-1);
+        co1->setPos(180, (GBA_SCREEN_HEIGHT - 64));
+
+        coins.push_back(createCoin());
+        auto &co2 = coins.at(coins.size()-1);
+        co2->setPos(15, 32);
+
         engine.get()->updateSpritesInScene();
     }
 
+    ///Call checkCollision method  -->  Clean up
     checkCollision();
+    removeCarsOffScreenDown();
+    removeTreeTrunksOffScreenDown();
+    removeCoinsOffScreenDown();
     if(collision){
         ///END THE GAME AND GO TO END SCREEN WITH SCORE
     }
 }
 
+/*
+ * for(auto const& value: a) {
+ * std::cout << value;
+ * ... */
+
+
+///Check collision between sprites
 void GameScreen::checkCollision(){
+    ///Check collision with cars --> Death (GAME OVER)
     for(auto &c : cars) {
         if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite()) ||
            birdPlayer->getbirdForwardMoveSprite()->collidesWith(*c->getSprite()) ||
@@ -147,6 +277,32 @@ void GameScreen::checkCollision(){
 
             birdPlayer->score = 69;
             collision = true;
+        }
+    }
+    ///Check collision with treetrunks --> Collision necesarry to cross rivers
+    for(auto &t : treeTrunks) { //From most common to least common
+        if(birdPlayer->getBirdForwardSprite()->collidesWith(*t->getSprite())){
+            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            birdPlayer->score = birdPlayer->score++;
+            birdPlayer->getBirdForwardSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
+        }
+        else if(birdPlayer->getbirdForwardMoveSprite()->collidesWith(*t->getSprite())){
+            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            birdPlayer->score = birdPlayer->score++;
+            birdPlayer->getbirdForwardMoveSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
+        }
+    }
+    ///Check collision with coins --> Time off score, erase coin if picked up
+    for(auto &c : coins) {
+        if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite()) ||
+           birdPlayer->getbirdForwardMoveSprite()->collidesWith(*c->getSprite()) ||
+           birdPlayer->getbirdLeftSprite()->collidesWith(*c->getSprite()) ||
+           birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
+
+            birdPlayer->score = birdPlayer->score + 1000;
+            coins.erase(find(coins.begin(), coins.end(), c));
+
+            engine->updateSpritesInScene();
         }
     }
 }
