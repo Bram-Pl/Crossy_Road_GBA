@@ -11,5 +11,10 @@ void treeTrunk::setPos(int x, int y) {
 
 void treeTrunk::tick() {
     sprite->moveTo(x_position,y_position);
-    x_position = x_position - 1;
+    if(!switchDir){
+        x_position = x_position - 1;
+    }else if(switchDir){
+        x_position = x_position + 1;
+    }
+
 }

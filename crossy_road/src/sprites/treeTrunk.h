@@ -17,6 +17,7 @@ public:
 
     int x_position;
     int y_position;
+    bool switchDir = false;
 
     void tick();
     bool isOffScreenDown() {return sprite->isOffScreenDown(); }

@@ -37,7 +37,7 @@ bool Sprite::isOffScreen() {
 }
 
 bool Sprite::isOffScreenDown() {
-    return y > GBA_SCREEN_HEIGHT;
+    return y > GBA_SCREEN_HEIGHT + 32;
 }
 
 void Sprite::flipHorizontally(bool flip) {
@@ -146,6 +146,18 @@ bool Sprite::collidesWith(Sprite &s2) {
             s1.x + s1.w > s2.x &&
             s1.y < s2.y + s2.h &&
             s1.h + s1.y > s2.y) {
+        return true;
+    }
+    return false;
+}
+
+bool Sprite::collidesWithTreeTrunk(Sprite &s2) {
+    const Sprite &s1 = *this;
+
+    if(s1.x < s2.x + s2.w - 16 &&
+       s2.x < s1.x + s1.w - 16 &&
+       s1.y < s2.y + s2.h &&
+       s1.h + s1.y > s2.y) {
         return true;
     }
     return false;

@@ -36,18 +36,19 @@ std::vector<Sprite *> GameScreen::sprites() {
     for(auto& c : cars){
         sprites.push_back(c->getSprite());
     }
-    sprites.push_back(someCarSprite.get());
 
     ///treeTrunk: get sprites for all the treetrunks and add to vector
     for(auto& t : treeTrunks){
         sprites.push_back((t->getSprite()));
     }
-    sprites.push_back(someTreeTrunkSprite.get());
 
     ///coin: get sprites for all the coins and add to vector
     for(auto& c : coins){
         sprites.push_back((c->getSprite()));
     }
+
+    sprites.push_back(someCarSprite.get());
+    sprites.push_back(someTreeTrunkSprite.get());
     sprites.push_back(someCoinSprite.get());
 
     return sprites;
@@ -71,6 +72,7 @@ void GameScreen::removeCarsOffScreenDown(){
 
     if(sizeOfCars > cars.size()){
         engine.get()->updateSpritesInScene();
+        ReflipSprite();
     }
 }
 
@@ -92,6 +94,7 @@ void GameScreen::removeTreeTrunksOffScreenDown() {
 
     if(sizeOfTreeTrunks > treeTrunks.size()){
         engine.get()->updateSpritesInScene();
+        ReflipSprite();
     }
     //engine.get()->updateSpritesInScene(); WHEN Executed EVERY time, we get moon walking chicken...
 }
@@ -112,8 +115,8 @@ void GameScreen::removeCoinsOffScreenDown() {
             std::remove_if(coins.begin(), coins.end(), [](std::unique_ptr<coin> &c) { return c->isOffScreenDown(); }),
             coins.end());
 
-    if(sizeOfCoins > coins.size()){
-        engine.get()->updateSpritesInScene();
+    if(sizeOfCoins > coins.size()) {
+        ReflipSprite();
     }
 }
 
@@ -123,6 +126,15 @@ std::unique_ptr<coin> GameScreen::createCoin() {
         .buildWithDataOf(*someCoinSprite.get())));
 }
 #pragma endregion Coins
+
+void GameScreen::ReflipSprite() {
+    for(auto &c : cars) {
+        if(c->switchDir != true){
+            c->stdMirror = true;
+        }
+    }
+    engine->updateSpritesInScene();
+}
 
 ///When loading the scene this happens
 void GameScreen::load() {
@@ -222,31 +234,81 @@ void GameScreen::tick(u16 keys) {
 
 #pragma endregion movement sprites
 
-    ///GENERATE SPRITES FOR MAP: First call to generate three cars, one tree trunk, two coins
+    ///GENERATE SPRITES FOR MAP: First call to generate all sprites
     if(!generateOne){
-        cars.push_back(createCar());
-        auto &c1 = cars.at(cars.size() - 1);
-        c1->setPos(-32,(GBA_SCREEN_HEIGHT - 128));
-        cars.push_back(createCar());
-        auto &c2 = cars.at(cars.size() - 1);
-        c2->setPos(-86,(GBA_SCREEN_HEIGHT - 128));
-        cars.push_back(createCar());
-        auto &c3 = cars.at(cars.size() - 1);
-        c3->setPos(-350,(GBA_SCREEN_HEIGHT - 128));
-        generateOne = true;
-
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t1 = treeTrunks.at(treeTrunks.size()-1);
-        t1->setPos(GBA_SCREEN_WIDTH, (GBA_SCREEN_HEIGHT - 56));
-
+        ///In order of appearence
+        //2nd row
         coins.push_back(createCoin());
         auto &co1 = coins.at(coins.size()-1);
-        co1->setPos(180, (GBA_SCREEN_HEIGHT - 64));
+        co1->setPos(30, 96);
 
+        //3th row
+        cars.push_back(createCar());
+        auto &c1 = cars.at(cars.size() - 1);
+        c1->switchDir = true;
+        c1->setPos(-32,(GBA_SCREEN_HEIGHT - 96));
+        cars.push_back(createCar());
+        auto &c2 = cars.at(cars.size() - 1);
+        c2->switchDir = true;
+        c2->setPos(-86,(GBA_SCREEN_HEIGHT - 96));
+        cars.push_back(createCar());
+        auto &c3 = cars.at(cars.size() - 1);
+        c3->switchDir = true;
+        c3->setPos(-350,(GBA_SCREEN_HEIGHT - 96));
+
+        //5th row
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t1 = treeTrunks.at(treeTrunks.size()-1);
+        t1->setPos(GBA_SCREEN_WIDTH, 8);
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t2 = treeTrunks.at(treeTrunks.size()-1);
+        t2->setPos(GBA_SCREEN_WIDTH + 86, 8);
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t3 = treeTrunks.at(treeTrunks.size()-1);
+        t3->setPos(GBA_SCREEN_WIDTH + 220, 8);
+
+        //6th row
         coins.push_back(createCoin());
         auto &co2 = coins.at(coins.size()-1);
-        co2->setPos(15, 32);
+        co2->setPos(180, -32);
 
+        //7th row
+        cars.push_back(createCar());
+        auto &c4 = cars.at(cars.size() - 1);
+        c4->stdMirror = true;
+        c4->setPos(-32,-64);
+        cars.push_back(createCar());
+        auto &c5 = cars.at(cars.size() - 1);
+        c5->stdMirror = true;
+        c5->setPos(-86,-64);
+        cars.push_back(createCar());
+        auto &c6 = cars.at(cars.size() - 1);
+        c6->stdMirror = true;
+        c6->setPos(-350,-64);
+
+        //8th row
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t4 = treeTrunks.at(treeTrunks.size()-1);
+        t4->setPos(GBA_SCREEN_WIDTH + 32, -88);
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t5 = treeTrunks.at(treeTrunks.size()-1);
+        t5->setPos(GBA_SCREEN_WIDTH + 120, -88);
+        treeTrunks.push_back(createTreeTrunk());
+        auto &t6 = treeTrunks.at(treeTrunks.size()-1);
+        t6->setPos(GBA_SCREEN_WIDTH + 260, -88);
+
+        /*//9th row
+        coins.push_back(createCoin());
+        auto &co3 = coins.at(coins.size()-1);
+        co3->setPos(180, -128);*/
+
+        /*//10th row
+        coins.push_back(createCoin());
+        auto &co4 = coins.at(coins.size()-1);
+        co4->setPos(10, -160);*/
+
+
+        generateOne = true;
         engine.get()->updateSpritesInScene();
     }
 
@@ -281,15 +343,25 @@ void GameScreen::checkCollision(){
     }
     ///Check collision with treetrunks --> Collision necesarry to cross rivers
     for(auto &t : treeTrunks) { //From most common to least common
-        if(birdPlayer->getBirdForwardSprite()->collidesWith(*t->getSprite())){
+        if(birdPlayer->getBirdForwardSprite()->collidesWithTreeTrunk(*t->getSprite())){
             birdPlayer->xPosition = birdPlayer->xPosition - 1;
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getBirdForwardSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
-        else if(birdPlayer->getbirdForwardMoveSprite()->collidesWith(*t->getSprite())){
+        else if(birdPlayer->getbirdForwardMoveSprite()->collidesWithTreeTrunk(*t->getSprite())){
             birdPlayer->xPosition = birdPlayer->xPosition - 1;
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getbirdForwardMoveSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
+        }
+        else if(birdPlayer->getbirdLeftSprite()->collidesWithTreeTrunk(*t->getSprite())){
+            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            birdPlayer->score = birdPlayer->score++;
+            birdPlayer->getbirdLeftSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
+        }
+        else if(birdPlayer->getbirdLeftMoveSprite()->collidesWithTreeTrunk(*t->getSprite())){
+            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            birdPlayer->score = birdPlayer->score++;
+            birdPlayer->getbirdLeftMoveSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
     }
     ///Check collision with coins --> Time off score, erase coin if picked up

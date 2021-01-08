@@ -42,6 +42,8 @@ private:
     std::unique_ptr<coin> createCoin();
     void removeCoinsOffScreenDown();
 
+    void ReflipSprite();
+
     bool generateOne = false;
     bool collision = false;
     void checkCollision();
