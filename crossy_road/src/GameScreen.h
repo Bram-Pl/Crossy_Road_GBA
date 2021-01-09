@@ -28,13 +28,13 @@ private:
     std::unique_ptr<Sprite> someCarSprite;
     std::vector<std::unique_ptr<car>> cars;
     std::unique_ptr<car> createCar();
-    void removeCarsOffScreenDown();
+    void carsBorderDetection();
 
     ///TREETRUNK: Sprites and methods
     std::unique_ptr<Sprite> someTreeTrunkSprite;
     std::vector<std::unique_ptr<treeTrunk>> treeTrunks;
     std::unique_ptr<treeTrunk> createTreeTrunk();
-    void removeTreeTrunksOffScreenDown();
+    void treeTrunksBorderDetection();
 
     ///COIN: Sprites and methods
     std::unique_ptr<Sprite> someCoinSprite;
@@ -44,7 +44,7 @@ private:
 
     void ReflipSprite();
 
-    bool generateOne = false;
+    bool birdMoved = true;
     bool collision = false;
     void checkCollision();
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);

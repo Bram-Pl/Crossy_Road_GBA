@@ -28,11 +28,11 @@ void bird::tick(u16 keys) {
             lastMoveForward = true;
             lastMoveRight = false;
             lastMoveLeft = false;
-            if(virtualYPos < 416){
+            if(virtualYPos < 480){
                 virtualYPos = virtualYPos + 32;
                 score++;
             }
-            else if(virtualYPos = 416){
+            else if(virtualYPos = 480){
                 if(yPosition > 31){
                     yPosition = yPosition - 32;
                     birdForwardMoveSprite->moveTo(xPosition, yPosition);

@@ -49,9 +49,9 @@ public:
     void tick(u16 keys);
 
     ///Declaration start position bird
-    double xPosition = (GBA_SCREEN_WIDTH/2 - 16);
-    double yPosition = (GBA_SCREEN_HEIGHT - 32);
-    double virtualYPos = yPosition;
+    int xPosition = (GBA_SCREEN_WIDTH/2 - 16);
+    int yPosition = (GBA_SCREEN_HEIGHT - 32);
+    int virtualYPos = yPosition;
 };
 
 

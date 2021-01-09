@@ -63,7 +63,17 @@ std::vector<Background *> GameScreen::backgrounds() {
 
 #pragma region Car Methods
 ///CARS: Method to remove cars if they are off screen
-void GameScreen::removeCarsOffScreenDown(){
+void GameScreen::carsBorderDetection(){
+
+    for(auto &c : cars) {
+        if(c->x_position < - 32 && !c->switchDir){
+            c->x_position = GBA_SCREEN_WIDTH + 32;
+        }
+        else if(c->x_position > GBA_SCREEN_WIDTH + 32 && c->switchDir){
+            c->x_position = -32;
+        }
+    }
+
     int sizeOfCars = cars.size();
 
     cars.erase(
@@ -84,8 +94,18 @@ std::unique_ptr<car> GameScreen::createCar(){
 #pragma endregion Cars
 
 #pragma region TreeTrunks Methods
-///CARS: Method to remove cars if they are off screen
-void GameScreen::removeTreeTrunksOffScreenDown() {
+///TREETRUNKS: Method to remove treetrunks if they are off screen AND move treetrunks back
+void GameScreen::treeTrunksBorderDetection() {
+
+    for(auto &t : treeTrunks) {
+        if(t->x_position < - 32 && !t->switchDir){
+            t->x_position = GBA_SCREEN_WIDTH + 32;
+        }
+        else if(t->x_position > GBA_SCREEN_WIDTH + 32 && t->switchDir){
+            t->x_position = -32;
+        }
+    }
+
     int sizeOfTreeTrunks = treeTrunks.size();
 
     treeTrunks.erase(
@@ -99,7 +119,7 @@ void GameScreen::removeTreeTrunksOffScreenDown() {
     //engine.get()->updateSpritesInScene(); WHEN Executed EVERY time, we get moon walking chicken...
 }
 
-///CARS: Call method to create a single treeTrunk
+///TREETRUNKS: Call method to create a single treeTrunk
 std::unique_ptr<treeTrunk> GameScreen::createTreeTrunk(){
     return std::unique_ptr<treeTrunk>(new treeTrunk(builder
         .buildWithDataOf(*someTreeTrunkSprite.get())));
@@ -107,7 +127,7 @@ std::unique_ptr<treeTrunk> GameScreen::createTreeTrunk(){
 #pragma endregion TreeTrunks
 
 #pragma region Coins Methods
-///CARS: Method to remove cars if they are off screen
+///COINS: Method to remove coins if they are off screen
 void GameScreen::removeCoinsOffScreenDown() {
     int sizeOfCoins = coins.size();
 
@@ -229,93 +249,185 @@ void GameScreen::tick(u16 keys) {
             c->y_position = c->y_position + 32;
         }
     }
-
-    globalYPos = birdPlayer->virtualYPos;
+    if(globalYPos != birdPlayer->virtualYPos){
+        birdMoved = true;
+        globalYPos = birdPlayer->virtualYPos;
+    }
 
 #pragma endregion movement sprites
 
+#pragma region generate sprites
     ///GENERATE SPRITES FOR MAP: First call to generate all sprites
-    if(!generateOne){
-        ///In order of appearence
-        //2nd row
-        coins.push_back(createCoin());
-        auto &co1 = coins.at(coins.size()-1);
-        co1->setPos(30, 96);
 
-        //3th row
-        cars.push_back(createCar());
-        auto &c1 = cars.at(cars.size() - 1);
-        c1->switchDir = true;
-        c1->setPos(-32,(GBA_SCREEN_HEIGHT - 96));
-        cars.push_back(createCar());
-        auto &c2 = cars.at(cars.size() - 1);
-        c2->switchDir = true;
-        c2->setPos(-86,(GBA_SCREEN_HEIGHT - 96));
-        cars.push_back(createCar());
-        auto &c3 = cars.at(cars.size() - 1);
-        c3->switchDir = true;
-        c3->setPos(-350,(GBA_SCREEN_HEIGHT - 96));
+        if (birdPlayer->virtualYPos == 128 && birdMoved) {
+            birdMoved = false;
+            ///In order of appearence
+            //2nd row
+            coins.push_back(createCoin());
+            auto &co1 = coins.at(coins.size() - 1);
+            co1->setPos(30, 96);
 
-        //5th row
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t1 = treeTrunks.at(treeTrunks.size()-1);
-        t1->setPos(GBA_SCREEN_WIDTH, 8);
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t2 = treeTrunks.at(treeTrunks.size()-1);
-        t2->setPos(GBA_SCREEN_WIDTH + 86, 8);
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t3 = treeTrunks.at(treeTrunks.size()-1);
-        t3->setPos(GBA_SCREEN_WIDTH + 220, 8);
+            //3th row
+            cars.push_back(createCar());
+            auto &c1 = cars.at(cars.size() - 1);
+            c1->switchDir = true;
+            c1->setPos(-32, (GBA_SCREEN_HEIGHT - 96));
+            cars.push_back(createCar());
+            auto &c2 = cars.at(cars.size() - 1);
+            c2->switchDir = true;
+            c2->setPos(38, (GBA_SCREEN_HEIGHT - 96));
+            cars.push_back(createCar());
+            auto &c3 = cars.at(cars.size() - 1);
+            c3->switchDir = true;
+            c3->setPos(240, (GBA_SCREEN_HEIGHT - 96));
 
-        //6th row
-        coins.push_back(createCoin());
-        auto &co2 = coins.at(coins.size()-1);
-        co2->setPos(180, -32);
+            //5th row
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t1 = treeTrunks.at(treeTrunks.size() - 1);
+            t1->setPos(GBA_SCREEN_WIDTH, 8);
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t2 = treeTrunks.at(treeTrunks.size() - 1);
+            t2->setPos(GBA_SCREEN_WIDTH + 86, 8);
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t3 = treeTrunks.at(treeTrunks.size() - 1);
+            t3->setPos(GBA_SCREEN_WIDTH + 220, 8);
 
-        //7th row
-        cars.push_back(createCar());
-        auto &c4 = cars.at(cars.size() - 1);
-        c4->stdMirror = true;
-        c4->setPos(-32,-64);
-        cars.push_back(createCar());
-        auto &c5 = cars.at(cars.size() - 1);
-        c5->stdMirror = true;
-        c5->setPos(-86,-64);
-        cars.push_back(createCar());
-        auto &c6 = cars.at(cars.size() - 1);
-        c6->stdMirror = true;
-        c6->setPos(-350,-64);
+            //6th row
+            coins.push_back(createCoin());
+            auto &co2 = coins.at(coins.size() - 1);
+            co2->setPos(180, -32);
 
-        //8th row
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t4 = treeTrunks.at(treeTrunks.size()-1);
-        t4->setPos(GBA_SCREEN_WIDTH + 32, -88);
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t5 = treeTrunks.at(treeTrunks.size()-1);
-        t5->setPos(GBA_SCREEN_WIDTH + 120, -88);
-        treeTrunks.push_back(createTreeTrunk());
-        auto &t6 = treeTrunks.at(treeTrunks.size()-1);
-        t6->setPos(GBA_SCREEN_WIDTH + 260, -88);
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 160 && birdMoved){
+            //7th row
+            cars.push_back(createCar());
+            auto &c4 = cars.at(cars.size() - 1);
+            c4->stdMirror = true;
+            c4->setPos(-32, -32);
+            cars.push_back(createCar());
+            auto &c5 = cars.at(cars.size() - 1);
+            c5->stdMirror = true;
+            c5->setPos(-86, -32);
+            cars.push_back(createCar());
+            auto &c6 = cars.at(cars.size() - 1);
+            c6->stdMirror = true;
+            c6->setPos(-350, -32);
 
-        /*//9th row
-        coins.push_back(createCoin());
-        auto &co3 = coins.at(coins.size()-1);
-        co3->setPos(180, -128);*/
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 192 && birdMoved){
+            //8th row
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t4 = treeTrunks.at(treeTrunks.size()-1);
+            t4->setPos(GBA_SCREEN_WIDTH + 32, -24);
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t5 = treeTrunks.at(treeTrunks.size()-1);
+            t5->setPos(GBA_SCREEN_WIDTH + 120, -24);
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t6 = treeTrunks.at(treeTrunks.size()-1);
+            t6->setPos(GBA_SCREEN_WIDTH + 260, -24);
 
-        /*//10th row
-        coins.push_back(createCoin());
-        auto &co4 = coins.at(coins.size()-1);
-        co4->setPos(10, -160);*/
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 224 && birdMoved){
+            //9th row
+            coins.push_back(createCoin());
+            auto &co3 = coins.at(coins.size()-1);
+            co3->setPos(180, -32);
 
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 256 && birdMoved){
+            //10th row
+            coins.push_back(createCoin());
+            auto &co4 = coins.at(coins.size()-1);
+            co4->setPos(10, -32);
 
-        generateOne = true;
-        engine.get()->updateSpritesInScene();
-    }
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 288 && birdMoved){
+            //11th row
+            cars.push_back(createCar());
+            auto &c7 = cars.at(cars.size() - 1);
+            c7->switchDir = true;
+            c7->setPos(-32, -32);
+            cars.push_back(createCar());
+            auto &c8 = cars.at(cars.size() - 1);
+            c8->switchDir = true;
+            c8->setPos(-86, -32);
+            cars.push_back(createCar());
+            auto &c9 = cars.at(cars.size() - 1);
+            c9->switchDir = true;
+            c9->setPos(-140, -32);
+
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 320 && birdMoved){
+            //12th row
+            cars.push_back(createCar());
+            auto &c10 = cars.at(cars.size() - 1);
+            c10->setPos(-32, -32);
+            cars.push_back(createCar());
+            auto &c11 = cars.at(cars.size() - 1);
+            c11->setPos(45, -32);
+            cars.push_back(createCar());
+            auto &c12 = cars.at(cars.size() - 1);
+            c12->setPos(160, -32);
+
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+
+        }
+        else if (birdPlayer->virtualYPos == 384 && birdMoved){
+            //14th row
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t7 = treeTrunks.at(treeTrunks.size()-1);
+            t7->switchDir = true;
+            t7->setPos(-40, -24);
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t8 = treeTrunks.at(treeTrunks.size()-1);
+            t8->switchDir = true;
+            t8->setPos(80, -24);
+            treeTrunks.push_back(createTreeTrunk());
+            auto &t9 = treeTrunks.at(treeTrunks.size()-1);
+            t9->switchDir = true;
+            t9->setPos(200, -24);
+
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+        else if (birdPlayer->virtualYPos == 416 && birdMoved){
+            //15th row
+            coins.push_back(createCoin());
+            auto &co5 = coins.at(coins.size()-1);
+            co5->setPos(200, -32);
+
+            birdMoved = false;
+            engine.get()->updateSpritesInScene();
+            ReflipSprite();
+        }
+
+#pragma endregion generate sprites
 
     ///Call checkCollision method  -->  Clean up
     checkCollision();
-    removeCarsOffScreenDown();
-    removeTreeTrunksOffScreenDown();
+    carsBorderDetection();
+    treeTrunksBorderDetection();
     removeCoinsOffScreenDown();
     if(collision){
         ///END THE GAME AND GO TO END SCREEN WITH SCORE
@@ -344,22 +456,46 @@ void GameScreen::checkCollision(){
     ///Check collision with treetrunks --> Collision necesarry to cross rivers
     for(auto &t : treeTrunks) { //From most common to least common
         if(birdPlayer->getBirdForwardSprite()->collidesWithTreeTrunk(*t->getSprite())){
-            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            if(!t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            }
+            if(t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition + 1;
+            }
+
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getBirdForwardSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
         else if(birdPlayer->getbirdForwardMoveSprite()->collidesWithTreeTrunk(*t->getSprite())){
-            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            if(!t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            }
+            if(t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition + 1;
+            }
+
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getbirdForwardMoveSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
         else if(birdPlayer->getbirdLeftSprite()->collidesWithTreeTrunk(*t->getSprite())){
-            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            if(!t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            }
+            if(t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition + 1;
+            }
+
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getbirdLeftSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
         else if(birdPlayer->getbirdLeftMoveSprite()->collidesWithTreeTrunk(*t->getSprite())){
-            birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            if(!t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition - 1;
+            }
+            if(t->switchDir){
+                birdPlayer->xPosition = birdPlayer->xPosition + 1;
+            }
+
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getbirdLeftMoveSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
@@ -375,6 +511,7 @@ void GameScreen::checkCollision(){
             coins.erase(find(coins.begin(), coins.end(), c));
 
             engine->updateSpritesInScene();
+            ReflipSprite();
         }
     }
 }
