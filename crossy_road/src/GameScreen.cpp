@@ -12,6 +12,8 @@
 #include "GameScreen.h"
 #include "../music/InGame.h"
 
+#include "../background/bgGameScreen.c"
+
 ///Sprites Includes
 #include "../sprites/shared.c"
 #include "../sprites/bird/birdForward.c"
@@ -21,6 +23,8 @@
 #include "../sprites/car/Car.c"
 #include "../sprites/treetrunk/TreeTrunk.c"
 #include "../sprites/coin/coin.c"
+
+#define bgX 0
 
 ///Load sprites into vector
 std::vector<Sprite *> GameScreen::sprites() {
@@ -57,7 +61,7 @@ std::vector<Sprite *> GameScreen::sprites() {
 ///Get background in game, may be removed if backgrounds are sprite ***
 std::vector<Background *> GameScreen::backgrounds() {
     return {
-        //bgBasic.get()
+            bgGameScreen.get()
     };
 }
 
@@ -129,14 +133,15 @@ std::unique_ptr<treeTrunk> GameScreen::createTreeTrunk(){
 #pragma region Coins Methods
 ///COINS: Method to remove coins if they are off screen
 void GameScreen::removeCoinsOffScreenDown() {
-    int sizeOfCoins = coins.size();
+    for(auto &c : coins) {
+        if(c->isOffScreenDown())
+        {
+            c->setPos(-64, GBA_SCREEN_HEIGHT + 32);
+            coins.erase(find(coins.begin(), coins.end(), c));
 
-    coins.erase(
-            std::remove_if(coins.begin(), coins.end(), [](std::unique_ptr<coin> &c) { return c->isOffScreenDown(); }),
-            coins.end());
-
-    if(sizeOfCoins > coins.size()) {
-        ReflipSprite();
+            engine->updateSpritesInScene();
+            ReflipSprite();
+        }
     }
 }
 
@@ -149,7 +154,7 @@ std::unique_ptr<coin> GameScreen::createCoin() {
 
 void GameScreen::ReflipSprite() {
     for(auto &c : cars) {
-        if(c->switchDir != true){
+        if(!c->switchDir){
             c->stdMirror = true;
         }
     }
@@ -164,6 +169,11 @@ void GameScreen::load() {
 
     ///Set colour palette for foreground(sprites) and background
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bgGameScreenPal,sizeof(bgGameScreenPal)));
+
+    bgGameScreen = std::unique_ptr<Background>(new Background(1, bgGameScreenTiles, sizeof(bgGameScreenTiles), bgGameScreenMap, sizeof(bgGameScreenMap), MAPLAYOUT_64X32));
+    bgGameScreen.get()->useMapScreenBlock(16);
+    bgGameScreen->scroll(bgX, bgYPos);
 
     ///Add birdPlayer to the game and call the possible sprites, only birdForward is visible in the screen
     birdPlayer = std::unique_ptr<bird>(new bird(        builder //Forward Bird
@@ -250,6 +260,8 @@ void GameScreen::tick(u16 keys) {
         }
     }
     if(globalYPos != birdPlayer->virtualYPos){
+        bgYPos = bgYPos - 32;
+        bgGameScreen->scroll(bgX, bgYPos);
         birdMoved = true;
         globalYPos = birdPlayer->virtualYPos;
     }
@@ -508,6 +520,7 @@ void GameScreen::checkCollision(){
            birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
 
             birdPlayer->score = birdPlayer->score + 1000;
+            c->setPos(-64, GBA_SCREEN_HEIGHT + 32);
             coins.erase(find(coins.begin(), coins.end(), c));
 
             engine->updateSpritesInScene();

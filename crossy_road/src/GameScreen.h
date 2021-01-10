@@ -18,7 +18,7 @@
 class GameScreen : public Scene {
 private:
     ///Declaration of background and sprites
-    std::unique_ptr<Background> bgBasic;
+    std::unique_ptr<Background> bgGameScreen;
     std::unique_ptr<bird> birdPlayer;
 
     ///Create spritebuilder to create sprites
@@ -48,6 +48,7 @@ private:
     bool collision = false;
     void checkCollision();
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);
+    int bgYPos = 352;
 
 public:
     ///Constructor
