@@ -19,7 +19,7 @@ public:
     int y_position;
 
     void tick();
-    bool isOffScreenDown() {return sprite->isOffScreenDown(); }
+    bool isOffScreenDown();
     Sprite* getSprite() {return sprite.get(); }
     void setPos(int x, int y);
 };

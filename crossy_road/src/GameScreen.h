@@ -46,7 +46,9 @@ private:
 
     bool birdMoved = true;
     bool collision = false;
+    bool fallenRiver = false;
     void checkCollision();
+    void checkRiverCollision();
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);
     int bgYPos = 352;
 

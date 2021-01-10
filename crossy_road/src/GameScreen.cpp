@@ -4,6 +4,7 @@
 
 #include <libgba-sprite-engine/background/text_stream.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
 #include <libgba-sprite-engine/gba/tonc_memdef.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <algorithm>
@@ -13,6 +14,8 @@
 #include "../music/InGame.h"
 
 #include "../background/bgGameScreen.c"
+#include "carCollisionScene.h"
+#include "riverCollisionScene.h"
 
 ///Sprites Includes
 #include "../sprites/shared.c"
@@ -136,8 +139,7 @@ void GameScreen::removeCoinsOffScreenDown() {
     for(auto &c : coins) {
         if(c->isOffScreenDown())
         {
-            c->setPos(-64, GBA_SCREEN_HEIGHT + 32);
-            coins.erase(find(coins.begin(), coins.end(), c));
+            coins.erase(coins.begin());
 
             engine->updateSpritesInScene();
             ReflipSprite();
@@ -227,7 +229,7 @@ void GameScreen::load() {
 void GameScreen::tick(u16 keys) {
 
     ///Display the current score
-    TextStream::instance().setText(std::string("Score:") + std::to_string(birdPlayer->score), 1, 19);
+    TextStream::instance().setText(std::string("Score:") + std::to_string(fallenRiver), 1, 19);
 
     ///Run the tick() method of birdPlayer and cars
     birdPlayer->tick(keys);
@@ -259,6 +261,8 @@ void GameScreen::tick(u16 keys) {
             c->y_position = c->y_position + 32;
         }
     }
+
+    ///Y Position change for background
     if(globalYPos != birdPlayer->virtualYPos){
         bgYPos = bgYPos - 32;
         bgGameScreen->scroll(bgX, bgYPos);
@@ -271,7 +275,7 @@ void GameScreen::tick(u16 keys) {
 #pragma region generate sprites
     ///GENERATE SPRITES FOR MAP: First call to generate all sprites
 
-        if (birdPlayer->virtualYPos == 128 && birdMoved) {
+        if(birdPlayer->virtualYPos == 128 && birdMoved) {
             birdMoved = false;
             ///In order of appearence
             //2nd row
@@ -358,16 +362,6 @@ void GameScreen::tick(u16 keys) {
             engine.get()->updateSpritesInScene();
             ReflipSprite();
         }
-        else if (birdPlayer->virtualYPos == 256 && birdMoved){
-            //10th row
-            coins.push_back(createCoin());
-            auto &co4 = coins.at(coins.size()-1);
-            co4->setPos(10, -32);
-
-            birdMoved = false;
-            engine.get()->updateSpritesInScene();
-            ReflipSprite();
-        }
         else if (birdPlayer->virtualYPos == 288 && birdMoved){
             //11th row
             cars.push_back(createCar());
@@ -441,9 +435,6 @@ void GameScreen::tick(u16 keys) {
     carsBorderDetection();
     treeTrunksBorderDetection();
     removeCoinsOffScreenDown();
-    if(collision){
-        ///END THE GAME AND GO TO END SCREEN WITH SCORE
-    }
 }
 
 /*
@@ -462,6 +453,9 @@ void GameScreen::checkCollision(){
            birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
 
             birdPlayer->score = 69;
+
+            engine->transitionIntoScene(new carCollisionScene(engine), new FadeOutScene(10));
+
             collision = true;
         }
     }
@@ -520,11 +514,29 @@ void GameScreen::checkCollision(){
            birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
 
             birdPlayer->score = birdPlayer->score + 1000;
-            c->setPos(-64, GBA_SCREEN_HEIGHT + 32);
-            coins.erase(find(coins.begin(), coins.end(), c));
+
+            coins.erase(coins.begin());
 
             engine->updateSpritesInScene();
             ReflipSprite();
+        }
+    }
+    //checkRiverCollision();
+}
+
+void GameScreen::checkRiverCollision(){
+    for(auto &t : treeTrunks){
+        if(globalYPos == 256 || globalYPos == 352 || globalYPos == 544){
+            if(!(birdPlayer->getBirdForwardSprite()->collidesWithTreeTrunk(*t->getSprite()) ||
+                 birdPlayer->getbirdForwardMoveSprite()->collidesWithTreeTrunk(*t->getSprite()) ||
+                 birdPlayer->getbirdLeftSprite()->collidesWithTreeTrunk(*t->getSprite()) ||
+                 birdPlayer->getbirdLeftMoveSprite()->collidesWithTreeTrunk(*t->getSprite()))){
+
+                fallenRiver = true;
+            }
+        }
+        if(fallenRiver){
+            engine->transitionIntoScene(new riverCollisionScene(engine), new FadeOutScene(10));
         }
     }
 }

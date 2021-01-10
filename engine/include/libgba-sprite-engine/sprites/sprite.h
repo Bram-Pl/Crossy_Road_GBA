@@ -114,6 +114,7 @@ public:
 
     ///Extra methods
     bool isOffScreenDown();
+    bool collidesWithCar(Sprite &s2);
     bool collidesWithTreeTrunk(Sprite &s2);
 };
 
