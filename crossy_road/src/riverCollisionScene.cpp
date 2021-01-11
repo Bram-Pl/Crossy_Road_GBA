@@ -45,7 +45,7 @@ void riverCollisionScene::load() {
     bird = builder
             .withData(birdForwardMoveTiles, sizeof(birdForwardMoveTiles))
             .withSize(SIZE_32_32)
-            .withLocation(0, (GBA_SCREEN_HEIGHT/2))
+            .withLocation((GBA_SCREEN_WIDTH/2) - 16, (GBA_SCREEN_HEIGHT + 32))
             .buildPtr();
 
     water = builder
@@ -63,5 +63,17 @@ void riverCollisionScene::load() {
 
 void riverCollisionScene::tick(u16 keys) {
     timer++;
-
+    if(bird->getY() != (GBA_SCREEN_HEIGHT/2)-16){
+        int birdY = bird->getY() - 1;
+        bird->moveTo(bird->getX(), birdY);
+    }
+    else{
+        bird->moveTo(GBA_SCREEN_WIDTH+32, GBA_SCREEN_HEIGHT+32);
+        water->moveTo((GBA_SCREEN_WIDTH/2)-16, ((GBA_SCREEN_HEIGHT/2)-16));
+        water->makeAnimated(0,3,5);
+    }
+    if(timer > 200){
+        water->moveTo(GBA_SCREEN_WIDTH+32, GBA_SCREEN_HEIGHT+32);
+        water->stopAnimating();
+    }
 }

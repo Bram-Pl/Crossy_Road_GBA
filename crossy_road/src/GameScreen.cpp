@@ -166,6 +166,8 @@ void GameScreen::ReflipSprite() {
 ///When loading the scene this happens
 void GameScreen::load() {
 
+    engine->getTimer()->start();
+
     ///Disable Background 2 and 3 to prevent gibberish
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1;
 
@@ -227,9 +229,8 @@ void GameScreen::load() {
 
 ///Every tick in game
 void GameScreen::tick(u16 keys) {
-
     ///Display the current score
-    TextStream::instance().setText(std::string("Score:") + std::to_string(fallenRiver), 1, 19);
+    TextStream::instance().setText(std::string("Score:") + std::to_string(nTicks % 8 == 0), 4, 10); // 19
 
     ///Run the tick() method of birdPlayer and cars
     birdPlayer->tick(keys);
@@ -447,19 +448,19 @@ void GameScreen::tick(u16 keys) {
 void GameScreen::checkCollision(){
     ///Check collision with cars --> Death (GAME OVER)
     for(auto &c : cars) {
-        if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite()) ||
-           birdPlayer->getbirdForwardMoveSprite()->collidesWith(*c->getSprite()) ||
-           birdPlayer->getbirdLeftSprite()->collidesWith(*c->getSprite()) ||
-           birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
+        if(birdPlayer->getBirdForwardSprite()->collidesWithCar(*c->getSprite()) ||
+           birdPlayer->getbirdForwardMoveSprite()->collidesWithCar(*c->getSprite()) ||
+           birdPlayer->getbirdLeftSprite()->collidesWithCar(*c->getSprite()) ||
+           birdPlayer->getbirdLeftMoveSprite()->collidesWithCar(*c->getSprite())){
 
             birdPlayer->score = 69;
 
             engine->transitionIntoScene(new carCollisionScene(engine), new FadeOutScene(10));
-
-            collision = true;
         }
     }
     ///Check collision with treetrunks --> Collision necesarry to cross rivers
+    int i = 0;
+
     for(auto &t : treeTrunks) { //From most common to least common
         if(birdPlayer->getBirdForwardSprite()->collidesWithTreeTrunk(*t->getSprite())){
             if(!t->switchDir){
@@ -505,7 +506,19 @@ void GameScreen::checkCollision(){
             birdPlayer->score = birdPlayer->score++;
             birdPlayer->getbirdLeftMoveSprite()->moveTo(birdPlayer->xPosition, birdPlayer->yPosition);
         }
+        else if(globalYPos == 256 || globalYPos == 352 || birdPlayer->yPosition == 64){
+            i++;
+            nTicks++;
+            if(nTicks == 64){nTicks = 0;}
+
+            if(i == treeTrunks.size()){
+                if(nTicks % 8 == 0){
+                    engine->transitionIntoScene(new riverCollisionScene(engine), new FadeOutScene(10));
+                }
+            }
+        }
     }
+
     ///Check collision with coins --> Time off score, erase coin if picked up
     for(auto &c : coins) {
         if(birdPlayer->getBirdForwardSprite()->collidesWith(*c->getSprite()) ||
@@ -519,24 +532,6 @@ void GameScreen::checkCollision(){
 
             engine->updateSpritesInScene();
             ReflipSprite();
-        }
-    }
-    //checkRiverCollision();
-}
-
-void GameScreen::checkRiverCollision(){
-    for(auto &t : treeTrunks){
-        if(globalYPos == 256 || globalYPos == 352 || globalYPos == 544){
-            if(!(birdPlayer->getBirdForwardSprite()->collidesWithTreeTrunk(*t->getSprite()) ||
-                 birdPlayer->getbirdForwardMoveSprite()->collidesWithTreeTrunk(*t->getSprite()) ||
-                 birdPlayer->getbirdLeftSprite()->collidesWithTreeTrunk(*t->getSprite()) ||
-                 birdPlayer->getbirdLeftMoveSprite()->collidesWithTreeTrunk(*t->getSprite()))){
-
-                fallenRiver = true;
-            }
-        }
-        if(fallenRiver){
-            engine->transitionIntoScene(new riverCollisionScene(engine), new FadeOutScene(10));
         }
     }
 }

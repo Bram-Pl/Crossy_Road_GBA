@@ -45,12 +45,11 @@ private:
     void ReflipSprite();
 
     bool birdMoved = true;
-    bool collision = false;
-    bool fallenRiver = false;
     void checkCollision();
-    void checkRiverCollision();
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);
     int bgYPos = 352;
+
+    int nTicks = 0;
 
 public:
     ///Constructor

@@ -154,8 +154,8 @@ bool Sprite::collidesWith(Sprite &s2) {
 bool Sprite::collidesWithCar(Sprite &s2) {
     const Sprite &s1 = *this;
 
-    if(s1.x < s2.x + s2.w &&
-       s1.x + s1.w > s2.x &&
+    if(s1.x + 7 < s2.x + s2.w - 2 &&
+       s2.x + 1 < s1.x + s1.w - 8 &&
        s1.y < s2.y + s2.h &&
        s1.h + s1.y > s2.y) {
         return true;
