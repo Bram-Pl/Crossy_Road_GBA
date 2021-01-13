@@ -16,6 +16,7 @@
 #include "../background/bgGameScreen.c"
 #include "carCollisionScene.h"
 #include "riverCollisionScene.h"
+#include "finishScene.h"
 
 ///Sprites Includes
 #include "../sprites/shared.c"
@@ -165,9 +166,6 @@ void GameScreen::ReflipSprite() {
 
 ///When loading the scene this happens
 void GameScreen::load() {
-
-    engine->getTimer()->start();
-
     ///Disable Background 2 and 3 to prevent gibberish
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1;
 
@@ -225,12 +223,14 @@ void GameScreen::load() {
 
     ///Enqueue music to start playing
     engine->enqueueMusic(InGame, InGame_bytes);
+    engine->getTimer()->start();
 }
 
 ///Every tick in game
 void GameScreen::tick(u16 keys) {
     ///Display the current score
-    TextStream::instance().setText(std::string("Score:") + std::to_string(nTicks % 8 == 0), 4, 10); // 19
+    //TextStream::instance().setText(std::string("Time:") + (engine->getTimer()->to_string()), 4, 7); // 19
+    TextStream::instance().setText(std::string("Time:") + engine->getTimer()->to_string(), 4, 7); // 19
 
     ///Run the tick() method of birdPlayer and cars
     birdPlayer->tick(keys);
@@ -428,6 +428,11 @@ void GameScreen::tick(u16 keys) {
             engine.get()->updateSpritesInScene();
             ReflipSprite();
         }
+        else if(birdPlayer->yPosition == 0){
+            engine->getTimer()->stop();
+
+            engine->transitionIntoScene(new finishScene(engine, nCoins, *engine->getTimer()), new FadeOutScene(20));
+        }
 
 #pragma endregion generate sprites
 
@@ -526,10 +531,8 @@ void GameScreen::checkCollision(){
            birdPlayer->getbirdLeftSprite()->collidesWith(*c->getSprite()) ||
            birdPlayer->getbirdLeftMoveSprite()->collidesWith(*c->getSprite())){
 
-            birdPlayer->score = birdPlayer->score + 1000;
-
+            nCoins++;
             coins.erase(coins.begin());
-
             engine->updateSpritesInScene();
             ReflipSprite();
         }

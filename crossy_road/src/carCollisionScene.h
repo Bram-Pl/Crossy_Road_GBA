@@ -11,6 +11,7 @@
 
 class carCollisionScene : public Scene{
 private:
+    std::unique_ptr<Background> bgCarCollision;
     std::unique_ptr<Sprite> explosion;
     std::unique_ptr<Sprite> car1;
     std::unique_ptr<Sprite> birdLeft;

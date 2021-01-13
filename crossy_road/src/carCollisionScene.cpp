@@ -6,6 +6,7 @@
 #include <libgba-sprite-engine/sprites/sprite.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
 
 #include "carCollisionScene.h"
 
@@ -15,9 +16,12 @@
 #include "../sprites/explosion/birdLeftMove.c"
 #include "../sprites/explosion/Car.c"
 
+#include "../background/bgCarCollision.c"
+#include "HomeStartScene.h"
+
 std::vector<Background *> carCollisionScene::backgrounds() {
     return{
-        //backgrounds
+            bgCarCollision.get()
     };
 }
 std::vector<Sprite *> carCollisionScene::sprites() {
@@ -37,17 +41,22 @@ void carCollisionScene::load() {
     engine.get()->enableText();
 
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
+    backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bgCarCollisionPal, sizeof(bgCarCollisionPal)));
+
+    bgCarCollision = std::unique_ptr<Background>(new Background(1,bgCarCollisionTiles, sizeof(bgCarCollisionTiles), bgCarCollisionMap, sizeof(bgCarCollisionMap)));
+    bgCarCollision->useMapScreenBlock(16);
+    bgCarCollision->scroll(0,0);
 
     birdLeft = builder
             .withData(birdLeftMoveTiles, sizeof(birdLeftMoveTiles))
             .withSize(SIZE_32_32)
-            .withLocation(208, (GBA_SCREEN_HEIGHT/2))
+            .withLocation(208, ((GBA_SCREEN_HEIGHT/2) - 16))
             .buildPtr();
 
     car1 = builder
             .withData(CarTiles, sizeof(CarTiles))
             .withSize(SIZE_32_32)
-            .withLocation(0, (GBA_SCREEN_HEIGHT/2))
+            .withLocation(0, ((GBA_SCREEN_HEIGHT/2) - 16))
             .buildPtr();
 
     explosion = builder
@@ -74,7 +83,12 @@ void carCollisionScene::tick(u16 keys) {
     else{
         birdLeft->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
         car1->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
-        explosion->moveTo((GBA_SCREEN_WIDTH / 2) - 16, (GBA_SCREEN_HEIGHT / 2) - 16);
+        explosion->moveTo((GBA_SCREEN_WIDTH / 2) - 16, (GBA_SCREEN_HEIGHT / 2) - 24);
         explosion->animate();
+    }
+    if(keys & KEY_START)
+    {
+        ///Transition into the new scene
+        engine->transitionIntoScene(new HomeStartScene(engine), new FadeOutScene(1));
     }
 }

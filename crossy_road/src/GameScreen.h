@@ -22,7 +22,7 @@ private:
     std::unique_ptr<bird> birdPlayer;
 
     ///Create spritebuilder to create sprites
-    SpriteBuilder<Sprite> builder;
+    SpriteBuilder <Sprite> builder;
 
     ///CARS: Sprites and methods
     std::unique_ptr<Sprite> someCarSprite;
@@ -49,6 +49,7 @@ private:
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);
     int bgYPos = 352;
 
+    unsigned char nCoins = 0;
     int nTicks = 0;
 
 public:

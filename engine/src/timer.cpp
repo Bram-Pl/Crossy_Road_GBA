@@ -59,3 +59,7 @@ void Timer::start() {
 void Timer::stop() {
     active = false;
 }
+
+void Timer::setMSecs(int nMsecs) {
+    msecs = nMsecs;
+}

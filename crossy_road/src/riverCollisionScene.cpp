@@ -6,6 +6,7 @@
 #include <libgba-sprite-engine/sprites/sprite.h>
 #include <libgba-sprite-engine/sprites/sprite_builder.h>
 #include <libgba-sprite-engine/background/text_stream.h>
+#include <libgba-sprite-engine/effects/fade_out_scene.h>
 
 #include "riverCollisionScene.h"
 
@@ -13,6 +14,7 @@
 #include "../sprites/waterDrip/shared.c"
 #include "../sprites/waterDrip/waterBubble.c"
 #include "../background/bgRiverCollision.c"
+#include "HomeStartScene.h"
 
 
 std::vector<Background *> riverCollisionScene::backgrounds() {
@@ -75,5 +77,11 @@ void riverCollisionScene::tick(u16 keys) {
     if(timer > 200){
         water->moveTo(GBA_SCREEN_WIDTH+32, GBA_SCREEN_HEIGHT+32);
         water->stopAnimating();
+    }
+
+    if(keys & KEY_START)
+    {
+        ///Transition into the new scene
+        engine->transitionIntoScene(new HomeStartScene(engine), new FadeOutScene(1));
     }
 }
