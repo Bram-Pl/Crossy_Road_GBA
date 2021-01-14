@@ -9,16 +9,17 @@
 
 class car {
 private:
+    ///Declaration of sprites
     std::unique_ptr<Sprite> sprite;
-
 public:
+    ///Constructor car
     car(std::unique_ptr<Sprite> sprite) : sprite(std::move(sprite)) {}
-
+    ///Parameters car
     int x_position;
     int y_position;
     bool switchDir = false;
     bool stdMirror = false;
-
+    ///Methods regarding car
     void tick();
     bool isOffScreenDown() {return sprite->isOffScreenDown(); }
     Sprite* getSprite() {return sprite.get(); }

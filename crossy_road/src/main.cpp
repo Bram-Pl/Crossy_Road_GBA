@@ -14,11 +14,9 @@ int main(){
     auto* startScene = new HomeStartScene(engine);
     engine->setScene(startScene);
 
-    ///Neverending loop to update engine, heart of the game
+    ///Neverending loop to update engine
     while (true){
         engine->update();
         engine->delay(1000);
     }
-
-    return(0);
 };

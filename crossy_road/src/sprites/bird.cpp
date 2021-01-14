@@ -8,12 +8,13 @@
 #define delayFly 15
 #define delayForward 14
 
-///bird class .cpp file
+/**
+ * @brief gets called every tick
+ * @param keys
+ */
 void bird::tick(u16 keys) {
-
     ///add tick to timer
     timer++;
-
     ///detect if 'UP' key is pressed, load the move forward sprite and increment the score by one
     if(keys & KEY_UP){
         if(delayForward < timer){
@@ -30,18 +31,15 @@ void bird::tick(u16 keys) {
             lastMoveLeft = false;
             if(virtualYPos < 480){
                 virtualYPos = virtualYPos + 32;
-                score++;
             }
             else if(virtualYPos = 480){
                 if(yPosition > 31){
                     yPosition = yPosition - 32;
                     birdForwardMoveSprite->moveTo(xPosition, yPosition);
-                    score++;
                 }
             }
         }
     }
-
     ///detect if 'LEFT' key is pressed, load the move left sprite
     if(keys & KEY_LEFT){
         timer = 0;
@@ -61,7 +59,6 @@ void bird::tick(u16 keys) {
         lastMoveLeft = true;
         lastMoveRight = false;
     }
-
     ///detect if 'RIGHT' key is pressed, load the move right sprite
     if(keys & KEY_RIGHT){
         timer = 0;
@@ -81,14 +78,12 @@ void bird::tick(u16 keys) {
         lastMoveLeft = false;
         lastMoveRight = true;
     }
-
     ///Stop the move forward sprite and replace with last movement forward sprite after 'delayfly' time generates the effect of 'flying' forward
     if(lastMoveForward && timer > delayFly){
         birdForwardSprite->moveTo(xPosition, yPosition);
         birdForwardMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
         lastMoveForward = !lastMoveForward;
     }
-
     ///Stop the move left sprite and replace with last movement left sprite after 'delayfly' time generates the effect of 'flying' left
     if(lastMoveLeft && timer > delayFly){
         birdLeftSprite->flipHorizontally(false);
@@ -96,7 +91,6 @@ void bird::tick(u16 keys) {
         birdLeftMoveSprite->moveTo((GBA_SCREEN_WIDTH + 64), (GBA_SCREEN_HEIGHT + 64));
         lastMoveLeft = !lastMoveLeft;
     }
-
     ///Stop the move right sprite and replace with last movement right sprite after 'delayfly' time generates the effect of 'flying' right
     if(lastMoveRight && timer > delayFly){
         birdLeftSprite->flipHorizontally(true);

@@ -30,8 +30,6 @@ public:
 
     std::string to_string();
 
-    void setMSecs(int nMsecs);
-
     int getTotalMsecs();
     int getMsecs() { return msecs; }
     int getSecs() { return secs; }

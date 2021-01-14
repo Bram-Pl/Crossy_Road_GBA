@@ -5,12 +5,11 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_HOMESTARTSCENE_H
 #define GBA_SPRITE_ENGINE_PROJECT_HOMESTARTSCENE_H
 
-
 #include <libgba-sprite-engine/scene.h>
 
 class HomeStartScene : public Scene {
 private:
-    ///Declaration of background and sprites on homestartscene
+    ///Background and sprites used in scene
     std::unique_ptr<Background> bgStartScreen;
     std::unique_ptr<Sprite> cloud0;
     std::unique_ptr<Sprite> cloud1;
@@ -21,14 +20,14 @@ private:
     ///timer to move the clouds
     int timer;
 public:
-    ///Constructor
+    ///Constructor homestart scene
+    HomeStartScene(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}
+
+    ///Vector with sprites and backgrounds
     std::vector<Sprite *> sprites() override;
     std::vector<Background *> backgrounds() override;
 
-    ///create scene using GBA Engine
-    HomeStartScene(std::shared_ptr<GBAEngine> engine) : Scene(engine) {}
-
-    ///Default functions for scene
+    ///Generic scene methods
     void load() override;
     void tick(u16 keys) override;
 };

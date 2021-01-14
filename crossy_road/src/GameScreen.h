@@ -5,7 +5,6 @@
 #ifndef GBA_SPRITE_ENGINE_PROJECT_GAMESCREEN_H
 #define GBA_SPRITE_ENGINE_PROJECT_GAMESCREEN_H
 
-
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/sprites/affine_sprite.h>
@@ -42,15 +41,16 @@ private:
     std::unique_ptr<coin> createCoin();
     void removeCoinsOffScreenDown();
 
+    ///Extra methods
     void ReflipSprite();
-
-    bool birdMoved = true;
     void checkCollision();
+
+    ///Extra variables
+    bool birdMoved = true;
     int globalYPos = (GBA_SCREEN_HEIGHT - 32);
     int bgYPos = 352;
-
-    unsigned char nCoins = 0;
     int nTicks = 0;
+    unsigned char nCoins = 0;
 
 public:
     ///Constructor

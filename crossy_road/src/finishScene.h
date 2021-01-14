@@ -8,31 +8,29 @@
 #include <libgba-sprite-engine/scene.h>
 #include <libgba-sprite-engine/gba_engine.h>
 #include <libgba-sprite-engine/sprites/sprite.h>
-#include <../../engine/include/libgba-sprite-engine/timer.h>
-#include <ctime>
 
 class finishScene : public Scene{
 private:
-    std::unique_ptr<Background> bgFinishScene;
-    std::unique_ptr<Sprite> flag;
-    std::unique_ptr<Sprite> bird;
+    ///Time calculations in milliseconds
+    int timems;     //totalTime in milliseconds
+    int t_Calms;    //calculated time in milliseconds
+    unsigned char numberOfCoins;    //Number of coins picked up in the game
 
-    unsigned char numberOfCoins;
+    std::string totalTime;  //string of totaltime MM:ss:ms
+    std::string deltaTime;  //string of deltaTime MM:ss:ms
+    std::string difTime;    //string of difTime MM:ss:ms
 
-    Timer time;
-
-    //SpriteBuilder<Sprite> builder;
-
+    std::unique_ptr<Background> bgFinishScene; //background for finish scene
 public:
+    ///Constructor finish scene
+    finishScene(std::shared_ptr<GBAEngine> engine, unsigned char  nCoins, int playTime) : Scene(engine) {numberOfCoins = nCoins; timems = playTime;}
 
-    std::vector<Sprite *> sprites() override;
+    ///Vector with sprites and backgrounds
+    std::vector<Sprite *> sprites() {};
     std::vector<Background *> backgrounds() override;
 
-    finishScene(std::shared_ptr<GBAEngine> engine, unsigned char  nCoins, Timer playTime) : Scene(engine) {numberOfCoins = nCoins; time = playTime;}
-
+    ///Generic scene methods
     void load() override;
     void tick(u16 keys) override;
 };
-
-
 #endif //GBA_SPRITE_ENGINE_PROJECT_FINISHSCENE_H

@@ -9,6 +9,7 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 
 #include "carCollisionScene.h"
+#include "HomeStartScene.h"
 
 #include "../sprites/explosion/explosion.c"
 #include "../sprites/explosion/shared.c"
@@ -17,13 +18,21 @@
 #include "../sprites/explosion/Car.c"
 
 #include "../background/bgCarCollision.c"
-#include "HomeStartScene.h"
 
+/**
+ * @brief collects backgrounds in vector
+ * @return vector of Background type
+ */
 std::vector<Background *> carCollisionScene::backgrounds() {
     return{
             bgCarCollision.get()
     };
 }
+
+/**
+ * @brief collects sprites in vector
+ * @return vector of Sprite type
+ */
 std::vector<Sprite *> carCollisionScene::sprites() {
     std::vector<Sprite *> sprites;
 
@@ -33,6 +42,9 @@ std::vector<Sprite *> carCollisionScene::sprites() {
     return{sprites};
 }
 
+/**
+ * @brief method gets called when scene is loaded in
+ */
 void carCollisionScene::load() {
     ///Disable Background 2 and 3 to prevent gibberish
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1; //Turning off background 2 and 3
@@ -40,13 +52,15 @@ void carCollisionScene::load() {
     ///Enable text to be presented on the menu
     engine.get()->enableText();
 
+    ///Palette for the sprites in the foreground and palette for the background
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(bgCarCollisionPal, sizeof(bgCarCollisionPal)));
-
+    ///Background parameters
     bgCarCollision = std::unique_ptr<Background>(new Background(1,bgCarCollisionTiles, sizeof(bgCarCollisionTiles), bgCarCollisionMap, sizeof(bgCarCollisionMap)));
     bgCarCollision->useMapScreenBlock(16);
     bgCarCollision->scroll(0,0);
 
+    ///Build sprites using builder
     birdLeft = builder
             .withData(birdLeftMoveTiles, sizeof(birdLeftMoveTiles))
             .withSize(SIZE_32_32)
@@ -67,12 +81,17 @@ void carCollisionScene::load() {
             .buildPtr();
     explosion->stopAnimating();
 
+    ///Set text on screen
     TextStream::instance().setText("Game Over!",15,10);
     TextStream::instance().setText("Death by car... Noob",16,6);
-
 }
 
+/**
+ * @brief gets called every tick
+ * @param keys
+ */
 void carCollisionScene::tick(u16 keys) {
+    timer++;
     if(!birdLeft->collidesWith(*car1.get())){
         int birdX = birdLeft->getX() - 1;
         birdLeft->moveTo(birdX, birdLeft->getY());
@@ -81,14 +100,15 @@ void carCollisionScene::tick(u16 keys) {
         car1->moveTo(carX, car1->getY());
     }
     else{
+        if(!playedSound){engine->enqueueSound(explosionSound, explosionSound_bytes); playedSound = true;}
         birdLeft->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
         car1->moveTo((GBA_SCREEN_WIDTH + 32), (GBA_SCREEN_HEIGHT + 32));
         explosion->moveTo((GBA_SCREEN_WIDTH / 2) - 16, (GBA_SCREEN_HEIGHT / 2) - 24);
         explosion->animate();
     }
-    if(keys & KEY_START)
-    {
-        ///Transition into the new scene
-        engine->transitionIntoScene(new HomeStartScene(engine), new FadeOutScene(1));
+    if(timer > 200){
+        explosion->moveTo(GBA_SCREEN_WIDTH+32, GBA_SCREEN_HEIGHT+32);
+        explosion->stopAnimating();
     }
+    if(keys & KEY_START){engine->transitionIntoScene(new HomeStartScene(engine), new FadeOutScene(1));}
 }

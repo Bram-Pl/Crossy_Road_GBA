@@ -36,23 +36,17 @@ public:
             birdLeftSprite(std::move(birdLeftSprite)),
             birdLeftMoveSprite(std::move(birdLeftMoveSprite)) {};
 
-
     ///Getters
     Sprite* getBirdForwardSprite() {return birdForwardSprite.get();}
     Sprite* getbirdForwardMoveSprite() {return birdForwardMoveSprite.get();}
     Sprite* getbirdLeftSprite() {return birdLeftSprite.get();}
     Sprite* getbirdLeftMoveSprite() {return birdLeftMoveSprite.get();}
-
-    int score = 0;
-
     ///tick function for key presses
     void tick(u16 keys);
-
     ///Declaration start position bird
     int xPosition = (GBA_SCREEN_WIDTH/2 - 16);
     int yPosition = (GBA_SCREEN_HEIGHT - 32);
     int virtualYPos = yPosition;
 };
-
 
 #endif //GBA_SPRITE_ENGINE_PROJECT_BIRD_H

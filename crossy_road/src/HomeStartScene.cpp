@@ -8,24 +8,29 @@
 #include <libgba-sprite-engine/effects/fade_out_scene.h>
 
 #include "HomeStartScene.h"
-#include "../background/start.h"
+#include "../background/startscreen.c"
 #include "GameScreen.h"
 #include "../sprites/cloud/shared.c"
 #include "../sprites/cloud/cloud0.c"
 #include "../sprites/cloud/cloud1.c"
 #include "../sprites/cloud/cloud2.c"
 #include "../music/CrossyRoadSoundTrack.h"
-
 #define cloudTick 5
 
-///Getter for the background
+/**
+ * @brief collects backgrounds in vector
+ * @return vector of Background type
+ */
 std::vector<Background *> HomeStartScene::backgrounds() {
     return {
             bgStartScreen.get()
     };
 }
 
-///Getter for the sprites
+/**
+ * @brief collects sprites in vector
+ * @return vector of Sprite type
+ */
 std::vector<Sprite *> HomeStartScene::sprites(){
     return{
         cloud0.get(),
@@ -36,12 +41,12 @@ std::vector<Sprite *> HomeStartScene::sprites(){
     };
 }
 
-///First load up of scene "HomeStartScene"
+/**
+ * @brief method gets called when scene is loaded in
+ */
 void HomeStartScene::load() {
-
     ///Default timer to value zero for the movement of clouds
     timer = 0;
-
     ///Disable Background 2 and 3 to prevent gibberish
     REG_DISPCNT = DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D | DCNT_BG0 | DCNT_BG1; //Turning off background 2 and 3
 
@@ -51,6 +56,7 @@ void HomeStartScene::load() {
     ///Create spritebuilder to create sprites
     SpriteBuilder<Sprite> builder;
 
+    #pragma region clouds
     ///Create four cloud sprites
     cloud0 = builder
             .withData(cloud0Tiles, sizeof(cloud0Tiles))
@@ -81,12 +87,13 @@ void HomeStartScene::load() {
             .withSize(SIZE_32_32)
             .withLocation((GBA_SCREEN_WIDTH+60), 22)
             .buildPtr();
+    #pragma endregion cloud
 
     ///Set colour palette for foreground(sprites) and background
     foregroundPalette = std::unique_ptr<ForegroundPaletteManager>(new ForegroundPaletteManager(sharedPal, sizeof(sharedPal)));
     backgroundPalette = std::unique_ptr<BackgroundPaletteManager>(new BackgroundPaletteManager(StartPal, sizeof(StartPal)));
 
-    ///Set parameters for background
+    ///Background parameters
     bgStartScreen = std::unique_ptr<Background>(new Background(1, StartTiles, sizeof(StartTiles), StartMap, sizeof(StartMap)));
     bgStartScreen.get()->useMapScreenBlock(7);  //7 IS GOED
 
@@ -98,7 +105,10 @@ void HomeStartScene::load() {
     engine->enqueueMusic(CrossyRoadSoundTrack, CrossyRoadSoundTrack_bytes);
 }
 
-///Every tick in game
+/**
+ * @brief gets called every tick
+ * @param keys
+ */
 void HomeStartScene::tick(u16 keys) {
     timer++;
 
