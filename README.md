@@ -15,3 +15,7 @@ The course called: "Softwareontwerp met C/C++ [INFCP_3433]" at Hasselt Universit
 The source code for our game can be found under `crossy_road` -> `src`.
 
 ## Domain Model for Crossy Road
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
