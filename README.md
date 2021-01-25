@@ -16,6 +16,12 @@ The source code for our game can be found under `crossy_road` -> `src`.
 
 ## Domain Model for Crossy Road
 
+## Authors
+
+* *Wouter Groeneveld*       - Lecturer  - [GitHub](https://github.com/wgroeneveld)
+* *Bram Plessers*        - Student   - [GitHub](https://github.com/Bram-Pl)
+* *Arne Niesten*   - Student   - [GitHub](https://github.com/arneniesten)
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
