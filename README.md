@@ -25,8 +25,6 @@ The Crossy Road Gameboy advanced edition is based on the very popular Crossy Roa
 * <- Move to the left
 </details>
 
-Translated with www.DeepL.com/Translator (free version)
-
 ## Domain Model for Crossy Road
 
 ## Authors
