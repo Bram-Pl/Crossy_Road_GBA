@@ -1,5 +1,3 @@
-# Crossy Road GBA - By Bram Plessers and Arne Niesten
-
 <img src="https://github.com/Bram-Pl/Crossy_Road_GBA/blob/master/Images/Extra/GitTitle.png">
 
 ## Crossy Road GBA Clone using [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine)
