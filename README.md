@@ -51,6 +51,46 @@ The Crossy Road Gameboy Advanced Edition is based on the very popular Crossy Roa
 <img src="https://github.com/Bram-Pl/Crossy_Road_GBA/blob/master/Images/Extra/DomainModel.png">
 
 *Click on the domain model to get a better and more clear overview.*
+
+<details>
+<summary>HomeStartScene</summary>
+
+At the start of the game, the HomeStartScene gets loaded. This scene is the startmenu of the game. On this scene there are a few clouds that move to make the game feel more alive. The timer implements the movement of the clouds and enables them to move at different speeds. The scene is called using the constructor and loads the sprites and backgrounds into a vector to be displayed. The load method allows this to be done. The tick method gets called every game tick and this tick increases the timer and depending on the value of the timer the clouds move. This method also checks if the “START” button is pressed. If this is the case, this scene gets terminated including all the sprites, backgrounds and palettes. The GameScreen gets loaded.
+
+</details>
+
+<details>
+<summary>GameScreen</summary>
+
+The GameScreen is the main game environment in which the game is played. The sprites that get loaded in are: car, treeTrunk, coin and bird. These have their own movement abilities. The car gets loaded in and moves in a set direction at a default speed. Multiple cars get loaded into a vector which makes it easier to manage the objects. The tree trunk has the same properties as the car. The coin spawns at default places across the map in a total of four. The bird is the player class which is used to move/navigate across the map.
+
+According to the virtual y position of the bird in the map objects get loaded and unloaded when progress is made. This improves performance. To construct objects, we use the template set for each individual object. For example: “car  someCarSprite”. Every game tick the collision between the bird player and an object. If the bird collides with a coin a sound will be played that notifies the player of a pickup. The number of coins picked up will be increased with every pickup. If the bird collides with a car a tire screech sound will be played and the game will terminate the GameScreen and move on to carCollisionScene. If the bird collides with a tree trunk, the bird will follow along the path of the tree trunk. If the bird misses the treetrunk or moves off of the tree trunk a water drop sound will be played and the GameScreen will be terminated and move on to riverCollisionScene. If the player reaches the end of the map, which is checked using the y position of the bird. The GameScreen gets terminated and the finishScene gets called. 
+
+</details>
+
+<details>
+<summary>carCollisionScene</summary>
+
+The car collision scene shows a short animation of the car and the bird moving towards each other. When they collide the bird and car blow up and an explosion occurs including sound effect. If the player presses the “START” button. The game restarts.
+
+</details>
+
+
+<details>
+<summary>riverCollisionScene</summary>
+
+The river collision scene shows a short animation of the bird moving towards the water strip in the middle of the screen. When the bird reaches the middle, a water drop sound and animation plays. If the player presses “START” button. The game restarts.
+
+</details>
+
+
+<details>
+<summary>finishScene</summary>
+
+The finish scene shows the end screen which shows the total time the player took to get to the finish line. If the player picked up coins while heading for the finish line, these coins get added up, multiplied by one second and deducts from the total time. The result of this deduction gets shown and is the resulting time.
+
+</details>
+
 ## Authors
 
 * *Wouter Groeneveld*       - Lecturer  - [GitHub](https://github.com/wgroeneveld)
@@ -65,3 +105,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Groeneveld, W., Tielemans, J. and Alfonso, R. for providing the [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine) for making the game.
 * [Piskel](https://www.piskelapp.com/) for providing the very useful tool for designing our sprites.
 * [Grit](https://www.coranac.com/man/grit/html/grit.htm) for converting our images.
+* [raw2gba](https://github.com/IanFinlayson/raw2gba) for converting raw music files to header files.
