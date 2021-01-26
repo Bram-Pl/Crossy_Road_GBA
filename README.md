@@ -3,6 +3,7 @@
 ## Crossy Road GBA Clone using [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine)
 
 The GBA-Sprite-Engine on which this game is build can be found via the hyperlink above. And is created by Groeneveld, W., Tielemans, J. and Alfonso, R. The GBA-Sprite-Engine is a high-level object-oriented Gameboy Advance sprite engine library that uses C++ 11 object-oriented approach. The project is forked from this engine.
+
 ## Course Information [INFCP_3433]
 The course called: "Softwareontwerp met C/C++ [INFCP_3433]" at Hasselt University given by [Groeneveld W.](https://github.com/wgroeneveld) required us to make a GBA game using the above mentioned GBA engine. 
 <details>
@@ -50,3 +51,8 @@ The Crossy Road Gameboy Advanced Edition is based on the very popular Crossy Roa
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+* Groeneveld, W., Tielemans, J. and Alfonso, R. for providing the [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine) for making the game.
+* [Piskel](https://www.piskelapp.com/) for providing the very useful tool for designing our sprites.
+* [Grit](https://www.coranac.com/man/grit/html/grit.htm) for converting our images.
