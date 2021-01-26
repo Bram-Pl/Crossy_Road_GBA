@@ -1,5 +1,7 @@
 # Crossy Road GBA - By Bram Plessers and Arne Niesten
 
+<img src="https://github.com/Bram-Pl/Crossy_Road_GBA/blob/master/Images/Extra/Logo.png">
+
 ## Crossy Road GBA Clone using [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine)
 
 The GBA-Sprite-Engine on which this game is build can be found via the hyperlink above. And is created by Groeneveld, W., Tielemans, J. and Alfonso, R. The GBA-Sprite-Engine is a high-level object-oriented Gameboy Advance sprite engine library that uses C++ 11 object-oriented approach. The project is forked from this engine.
