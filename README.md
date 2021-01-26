@@ -50,7 +50,7 @@ The Crossy Road Gameboy Advanced Edition is based on the very popular Crossy Roa
 
 <img src="https://github.com/Bram-Pl/Crossy_Road_GBA/blob/master/Images/Extra/DomainModel.png">
 
-
+*Click on the domain model to get a better and clearer overview.*
 ## Authors
 
 * *Wouter Groeneveld*       - Lecturer  - [GitHub](https://github.com/wgroeneveld)
