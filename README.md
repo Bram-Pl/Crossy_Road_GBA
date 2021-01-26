@@ -52,6 +52,7 @@ The Crossy Road Gameboy Advanced Edition is based on the very popular Crossy Roa
 
 *Click on the domain model to get a better and more clear overview.*
 
+### Explanation for each scene
 <details>
 <summary>HomeStartScene</summary>
 
