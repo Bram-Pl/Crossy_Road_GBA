@@ -10,19 +10,19 @@ The course called: "Softwareontwerp met C/C++ [INFCP_3433]" at Hasselt Universit
 
 * 1. The code will be available in a repository on Github under your own username with the [MIT](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/licensing-a-repository#disclaimer) license.
 
-*2. You'll start from the [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine) and you will stay within `MODE0` and work with sprites. C++11 is also a requirement.
+* 2. You'll start from the [GBA-Sprite-Engine](https://github.com/wgroeneveld/gba-sprite-engine) and you will stay within `MODE0` and work with sprites. C++11 is also a requirement.
 
-*3. In case you use others people code, use **source reference!** Plagiarism will be punished badly.
+* 3. In case you use others people code, use **source reference!** Plagiarism will be punished badly.
 
-*4. Your project needs to compile.
+* 4. Your project needs to compile.
 
-*5. Your repository `README.md` contains a small functional description of the game.
+* 5. Your repository `README.md` contains a small functional description of the game.
 
-*6. Beside the functional description you'll  also upload a sketch of your **domain model**, in combination with an explanation.
-
-The source code for our game can be found under `crossy_road` -> `src`.
+* 6. Beside the functional description you'll  also upload a sketch of your **domain model**, in combination with an explanation.
 
 </details>
+
+The source code for our game can be found under `crossy_road` -> `src`.
 
 ## Crossy Road
 
