@@ -16,13 +16,16 @@ The source code for our game can be found under `crossy_road` -> `src`.
 
 ## Crossy Road
 
-The Crossy Road Gameboy advanced edition is based on the very popular Crossy Road game for mobile devices. Try to reach the finish line as quickly as possible by completing a parkour full of obstacles and barriers. Do this in the fastest time possible. Along the way there are some coins you can collect, which will give you a bonus at the end. Can you set the fastest time?
+The Crossy Road Gameboy Advanced Edition is based on the very popular Crossy Road game for mobile devices. Try to reach the finish line as quickly as possible by completing a parkour full of obstacles and barriers. Do this in the fastest time possible. Along the way there are some coins you can collect, which will give you a bonus at the end. Can you set the fastest time?
 
 <details>
 <summary>Click to see the controls</summary>
-* -- Move forward
-* -> Move right
-* <- Move to the left
+* ↑ - Move forward
+
+* → - Move to the right
+
+* ← - Move to the left
+
 </details>
 
 ## Domain Model for Crossy Road
