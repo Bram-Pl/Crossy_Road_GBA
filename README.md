@@ -20,6 +20,7 @@ The Crossy Road Gameboy Advanced Edition is based on the very popular Crossy Roa
 
 <details>
 <summary>Click to see the controls</summary>
+
 * ↑ - Move forward
 
 * → - Move to the right
